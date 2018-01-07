@@ -1,1 +1,1 @@
-[a link](chemistrysim.com)
+[chemistrysim.com](chemistrysim.com)
