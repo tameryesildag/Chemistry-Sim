@@ -24,6 +24,8 @@ var boxes = [];
 var mesaj = "";
 var myVar;
 var sonmesaj = "";
+var sutabanyukseklik;
+var sutabany;
 
 var xspacing = 15;     // yatay pozisyonlar arasındaki uzaklık
 var w;                // tüm dalganın uzunluğu
@@ -88,6 +90,8 @@ function setup() {
     dx = (TWO_PI / period) * xspacing;
     yvalues = new Array(floor(w/xspacing));
     suyuksekligi = canvas.height / 2 + canvas.height / 3;
+    sutabanyukseklik = suyuksekligi;
+    sutabany = canvas.height - 100;
 }
 
 function draw() {
@@ -309,11 +313,11 @@ function calcWave() {
     fill(66, 134, 244);
     // Her bir noktaya elips çizerek dalgayı oluştur
     for (var x = 0; x < yvalues.length; x++) {
-      ellipse(x*xspacing, suyuksekligi+yvalues[x], 5, 5);
+      ellipse(x*xspacing, suyuksekligi+yvalues[x], 100, 100);
       for(y = suyuksekligi+yvalues[x];y < canvas.height ;y+= 100){
-        ellipse(x*xspacing,y,130,130);
       }
     }
+     rect(0,sutabany,canvas.width,sutabanyukseklik);
   }
 
   function entiekle(isim){
@@ -347,18 +351,13 @@ function calcWave() {
       for(let _box of boxes)
       Matter.Body.applyForce(_box,{x: 0, y: 0}, {x: 0, y: -0.1});
       }
-      sleep(1500);
+      else{
+          suarttir(200);
+          return;
+      }
       Matter.Body.setPosition(ground,{x: ground.position.x, y: suyuksekligi - 60});
   }
 
-  function sleep(milliseconds) {
-    var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
-      if ((new Date().getTime() - start) > milliseconds){
-        break;
-      }
-    }
-  }
 
   function suarttir(toplamartisyukseklik){
    print("SU ARTTIRMA FONKSIYONU TETIKLENDI");
@@ -373,6 +372,8 @@ function calcWave() {
           return;
       }
        suyuksekligi -= tikmetre;
+       sutabanyukseklik += tikmetre + 0.2;
+       sutabany -= tikmetre + 0.2;
        Matter.Body.setPosition(ground,{x: ground.position.x, y: ground.position.y - tikmetre});
        tiksayisi += 1;
   }
