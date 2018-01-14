@@ -14,7 +14,6 @@ var Render = Matter.Render;
 var engine;
 var world;
 var ground;
-var sucikti = 0;
 var solduvar;
 var sagduvar;
 var benimvarim;
@@ -24,17 +23,21 @@ var boxes = [];
 var mesaj = "";
 var myVar;
 var sonmesaj = "";
-var sutabanyukseklik;
-var sutabany;
 
-var xspacing = 15;     // yatay pozisyonlar arasındaki uzaklık
-var w;                // tüm dalganın uzunluğu
-var theta = 0.0;      // başlangıç açısı
-var amplitude = 5.0; // dalga yüksekliği
-var period = 1000.0;   // dalga tekrar etmeden önceki pixeller
-var dx;               // x'in artan değeri
-var yvalues;          // dalganın yükseklik değerlerinin tutulduğu dizin
-var suyuksekligi;
+var water = {
+    tabany:0,
+    tabanyukseklik:0,
+    cikti: 0,
+    suyuksekligi:0,
+    xspacing: 15,
+    w: 0,
+    theta: 0.0,
+    amplitude: 5.0,
+    period: 1000.0,
+    dx:0,
+    yvalues:0
+};
+
 
 function preload() {
   entiler.push(hidrojen1 = new enti("hidrojen1","hidrojen.png",800,600,0),hidrojen2 = new enti("hidrojen2","hidrojen.png",800,600,0),oksijen = new enti("oksijen1","oksijen.png",800,600,2));
@@ -68,6 +71,7 @@ function setup() {
         boxes.push(Bodies.rectangle(_enti.x,_enti.y,img[_enti.simage].width / 10,img[_enti.simage].height / 7));
     }
     Engine.run(engine);
+
     if(renderacik){
     var render = Render.create({
         element: document.body,
@@ -76,28 +80,26 @@ function setup() {
             width: canvas.width,
             height: canvas.height
         }
-    });
+    }); 
+
     Render.run(render); 
-}
+} 
     for(let _box of boxes){
         World.add(world, _box);
         Matter.Body.setInertia(_box, Infinity);
     }
-    olayGunluguEvent();
     world.gravity.y = 1.5;
-      
-    w = width+16;
-    dx = (TWO_PI / period) * xspacing;
-    yvalues = new Array(floor(w/xspacing));
-    suyuksekligi = canvas.height / 2 + canvas.height / 3;
-    sutabanyukseklik = suyuksekligi;
-    sutabany = canvas.height - 100;
+    water.w = canvas.width + 16;
+    water.dx = (TWO_PI / water.period) * water.xspacing;
+    water.yvalues = new Array(floor(water.w/water.xspacing));
+    water.suyuksekligi = canvas.height / 2 + canvas.height / 3;
+    water.tabanyukseklik = water.suyuksekligi;
+    water.tabany = canvas.height - 100;
+    olayGunluguEvent();
 }
 
 function draw() {
     background(242, 244, 247);
-  //  set(random(0, canvas.width),random(0,canvas.height),color(0));
-   // updatePixels();
     if(tiklandi == 1){
       if(entiler != null){
       for (let _enti of entiler) {
@@ -115,10 +117,7 @@ function draw() {
         }
        }
        if(_enti.name == entiler[secilenobje].name){
-      // _enti.y = _enti.y - _enti.height;
-      // _enti.x = _enti.x - _enti.width;
-      // boxes[entisirasi].position.x = _enti.x - _enti.width;
-      // boxes[entisirasi].position.y = _enti.y - _enti.height; 
+
        }
        image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
     }
@@ -133,14 +132,13 @@ for(let hidrojenolmasigereken of entiler){
           if(hidrojenolmasigereken.name.includes("hidrojen")){
               if(hidrojenolmasigereken2.name.includes("hidrojen") && hidrojenolmasigereken2.name != hidrojenolmasigereken.name){
                 if(dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken.x,hidrojenolmasigereken.y) < 50 && dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken2.x,hidrojenolmasigereken2.y) < 50){
-                 if(sucikti == 0){
-                   sucikart();
+                 if(water.cikti == 0){
+                    sucikart();
                  }
                  else{
-                     suarttir(200);
-                    // suyuksekligi -= 200;
+                    suarttir(200);
                  }
-                   Matter.Body.setPosition(ground,{x: ground.position.x, y: suyuksekligi - 60});
+                   Matter.Body.setPosition(ground,{x: ground.position.x, y: water.suyuksekligi - 60});
                    var silinecekler = [];
                    silinecekler.push(entiler.indexOf(oksijenolmasigereken),entiler.indexOf(hidrojenolmasigereken),entiler.indexOf(hidrojenolmasigereken2));
                    silinecekler.sort(function(a, b){return a-b});
@@ -154,20 +152,16 @@ for(let hidrojenolmasigereken of entiler){
    }
  }
 }
-//fill(0,0,0);
-//rect(0,canvas.height - 50,canvas.width,suyuksekligi);
 
 if(entiler != null){
 for (let _enti of entiler) {
     if(entiler.indexOf(_enti) != secilenobje){
     _enti.x = boxes[entiler.indexOf(_enti)].position.x;
- //   if(sucikti == 0){
     if(_enti.y <= 675){
     _enti.y = boxes[entiler.indexOf(_enti)].position.y;
     }
-//}
     else{
-        if(_enti.y <= suyuksekligi - 60){
+        if(_enti.y <= water.suyuksekligi - 60){
             _enti.y = boxes[entiler.indexOf(_enti)].position.y;
         }
     }
@@ -176,7 +170,7 @@ for (let _enti of entiler) {
     }
 }
 
-if(sucikti == 1){
+if(water.cikti == 1){
     calcWave();
     renderWave();
     
@@ -280,7 +274,7 @@ for (let _box of boxes) {
 }
 mesaj += ("\nground position: " + ground.position.y);
 mesaj += ("\nimg length: " + img.length);
-mesaj += ("\nsu yüksekliği: " + suyuksekligi);
+mesaj += ("\nsu yüksekliği: " + water.suyuksekligi);
 if(mesaj == sonmesaj){
     return;
 }
@@ -298,13 +292,13 @@ function mobilkontrol() {
 
 function calcWave() {
     // Theta'nın artışı (açısal momentum için farklı değerler dene)
-    theta += 0.10;
+    water.theta += 0.10;
   
     //Her bir x için sin() fonksiyonu kullanarak bir y hesaplama
-    var x = theta;
-    for (var i = 0; i < yvalues.length; i++) {
-      yvalues[i] = sin(x)*amplitude;
-      x+=dx;
+    var x = water.theta;
+    for (var i = 0; i < water.yvalues.length; i++) {
+      water.yvalues[i] = sin(x)*water.amplitude;
+      x+=water.dx;
     }
   }
   
@@ -312,12 +306,12 @@ function calcWave() {
     noStroke();
     fill(66, 134, 244);
     // Her bir noktaya elips çizerek dalgayı oluştur
-    for (var x = 0; x < yvalues.length; x++) {
-      ellipse(x*xspacing, suyuksekligi+yvalues[x], 100, 100);
-      for(y = suyuksekligi+yvalues[x];y < canvas.height ;y+= 100){
+    for (var x = 0; x < water.yvalues.length; x++) {
+      ellipse(x*water.xspacing, water.suyuksekligi+water.yvalues[x], 100, 100);
+      for(y = water.suyuksekligi+water.yvalues[x];y < canvas.height ;y+= 100){
       }
     }
-     rect(0,sutabany,canvas.width,sutabanyukseklik);
+     rect(0,water.tabany,canvas.width,water.tabanyukseklik);
   }
 
   function entiekle(isim){
@@ -346,8 +340,8 @@ function calcWave() {
   }
 
   function sucikart(){
-      if(sucikti == 0){
-      sucikti = 1;
+      if(water.cikti == 0){
+      water.cikti = 1;
       for(let _box of boxes)
       Matter.Body.applyForce(_box,{x: 0, y: 0}, {x: 0, y: -0.1});
       }
@@ -355,7 +349,7 @@ function calcWave() {
           suarttir(200);
           return;
       }
-      Matter.Body.setPosition(ground,{x: ground.position.x, y: suyuksekligi - 60});
+      Matter.Body.setPosition(ground,{x: ground.position.x, y: water.suyuksekligi - 60});
   }
 
 
@@ -371,11 +365,18 @@ function calcWave() {
           tiksayisi = 0;
           return;
       }
-       suyuksekligi -= tikmetre;
-       sutabanyukseklik += tikmetre + 0.2;
-       sutabany -= tikmetre + 0.2;
+       water.suyuksekligi -= tikmetre;
+       water.tabanyukseklik += tikmetre + 0.2;
+       water.tabany -= tikmetre + 0.2;
        Matter.Body.setPosition(ground,{x: ground.position.x, y: ground.position.y - tikmetre});
        tiksayisi += 1;
+  }
+  function sukaldir(){ 
+      water.cikti = 0;
+      water.suyuksekligi = canvas.height / 2 + canvas.height / 3;
+      water.tabany = canvas.height - 100;
+      water.tabanyukseklik = water.suyuksekligi;
+      Matter.Body.setPosition(ground,{x: document.body.clientWidth / 2, y: document.body.clientHeight - 30});
   }
 
   
