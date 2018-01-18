@@ -249,9 +249,6 @@ function mousePressed() {
 
 
 function olayGunluguEvent(){
-  //  for(let _box of boxes){
-   //     Matter.Body.applyForce(_box,{x: 0, y: 0}, {x: 0, y: -0.01});
- //   }
 mesaj = "";
 mesaj += ("\ncanvas width: " + canvas.width + " canvas height: " + canvas.height); 
 mesaj += ("\ntiklandi: " + tiklandi);
@@ -346,7 +343,9 @@ function calcWave() {
       Matter.Body.applyForce(_box,{x: 0, y: 0}, {x: 0, y: -0.1});
       }
       else{
+          if(tiksayisi == 0){
           suarttir(200);
+          }
           return;
       }
       Matter.Body.setPosition(ground,{x: ground.position.x, y: water.suyuksekligi - 60});
@@ -377,6 +376,9 @@ function calcWave() {
       water.tabany = canvas.height - 100;
       water.tabanyukseklik = water.suyuksekligi;
       Matter.Body.setPosition(ground,{x: document.body.clientWidth / 2, y: document.body.clientHeight - 30});
+      tiksayisi == 29;
+      clearInterval(benimvarim);
+      clearInterval(suarttirmaislem);
   }
 
   
