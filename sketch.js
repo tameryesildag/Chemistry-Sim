@@ -3,7 +3,7 @@
 var canvas;
 let entiler = [];
 var hidrojen;
-var renderacik = false;
+var renderacik = true;
 var tiklandi = 0;
 var secilenobje;
 let img = [];
@@ -58,7 +58,6 @@ function setup() {
     world = engine.world;
     var params = {
         isStatic: true
-        
       }
     ground = Bodies.rectangle(document.body.clientWidth / 2, document.body.clientHeight - 30 , document.body.clientWidth, 100, params);
     solduvar = Bodies.rectangle(-100,canvas.height,200,10000,params);
@@ -100,30 +99,7 @@ function setup() {
 
 function draw() {
     background(242, 244, 247);
-    if(tiklandi == 1){
-      if(entiler != null){
-      for (let _enti of entiler) {
-      var entisirasi = entiler.indexOf(_enti);
-      if(mouseX > 0 && mouseX < canvas.width){
-           if(_enti.name == entiler[secilenobje].name){
-               _enti.x = mouseX;
-               boxes[entisirasi].position.x = mouseX;
-           }
-       }
-       if(mouseY > 0 && mouseY < canvas.height){
-        if(_enti.name == entiler[secilenobje].name){
-            _enti.y = mouseY;
-            boxes[entisirasi].position.y = mouseY;
-        }
-       }
-       if(_enti.name == entiler[secilenobje].name){
-
-       }
-       image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
-    }
-    }    
-}
-
+    entirender();
 if(entiler != null){
 for(let oksijenolmasigereken of entiler){
 for(let hidrojenolmasigereken of entiler){
@@ -152,31 +128,10 @@ for(let hidrojenolmasigereken of entiler){
    }
  }
 }
-
-if(entiler != null){
-for (let _enti of entiler) {
-    if(entiler.indexOf(_enti) != secilenobje){
-    _enti.x = boxes[entiler.indexOf(_enti)].position.x;
-    if(_enti.y <= 675){
-    _enti.y = boxes[entiler.indexOf(_enti)].position.y;
-    }
-    else{
-        if(_enti.y <= water.suyuksekligi - 60){
-            _enti.y = boxes[entiler.indexOf(_enti)].position.y;
-        }
-    }
-    image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
-    }
-    }
-}
-
 if(water.cikti == 1){
     calcWave();
     renderWave();
-    
 }
-
-
 }
 
 function yoket(){
@@ -299,6 +254,7 @@ function calcWave() {
     }
   }
   
+
   function renderWave() {
     noStroke();
     fill(66, 134, 244);
@@ -308,8 +264,8 @@ function calcWave() {
       for(y = water.suyuksekligi+water.yvalues[x];y < canvas.height ;y+= 100){
       }
     }
-     rect(0,water.tabany,canvas.width,water.tabanyukseklik);
   }
+
 
   function entiekle(isim){
     var numara = 1;
@@ -336,7 +292,10 @@ function calcWave() {
    }
   }
 
+
   function sucikart(){
+      fill(66, 134, 244);
+      rect(0,water.tabany,canvas.width,water.tabanyukseklik);
       if(water.cikti == 0){
       water.cikti = 1;
       for(let _box of boxes)
@@ -351,8 +310,53 @@ function calcWave() {
       Matter.Body.setPosition(ground,{x: ground.position.x, y: water.suyuksekligi - 60});
   }
 
+  function entirender(){
+    if(tiklandi == 1){
+        if(entiler != null){
+        for (let _enti of entiler) {
+        var entisirasi = entiler.indexOf(_enti);
+        if(mouseX > 0 && mouseX < canvas.width){
+             if(_enti.name == entiler[secilenobje].name){
+                 _enti.x = mouseX;
+                 boxes[entisirasi].position.x = mouseX;
+             }
+         }
+         if(mouseY > 0 && mouseY < canvas.height){
+          if(_enti.name == entiler[secilenobje].name){
+              _enti.y = mouseY;
+              boxes[entisirasi].position.y = mouseY;
+          }
+         }
+         if(_enti.name == entiler[secilenobje].name){
+  
+         }
+         image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
+      }
+      }    
+  }
+
+
+  if(entiler != null){
+    for (let _enti of entiler) {
+        if(entiler.indexOf(_enti) != secilenobje){
+        _enti.x = boxes[entiler.indexOf(_enti)].position.x;
+        if(_enti.y <= 675){
+        _enti.y = boxes[entiler.indexOf(_enti)].position.y;
+        }
+        else{
+            if(_enti.y <= water.suyuksekligi - 60){
+                _enti.y = boxes[entiler.indexOf(_enti)].position.y;
+            }
+        }
+        image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
+        }
+        }
+    }
+  }
 
   function suarttir(toplamartisyukseklik){
+   fill(66, 134, 244);   
+   rect(0,water.tabany,canvas.width,water.tabanyukseklik);
    print("SU ARTTIRMA FONKSIYONU TETIKLENDI");
    tikmetre = 1.5;
    benimvarim = setInterval(suarttirmaislem, 100);
