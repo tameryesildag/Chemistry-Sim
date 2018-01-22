@@ -3,7 +3,7 @@
 var canvas;
 let entiler = [];
 var hidrojen;
-var renderacik = true;
+var renderacik = false;
 var tiklandi = 0;
 var secilenobje;
 let img = [];
