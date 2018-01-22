@@ -3,7 +3,7 @@
 var canvas;
 let entiler = [];
 var hidrojen;
-var renderacik = false;
+var renderacik = true;
 var tiklandi = 0;
 var secilenobje;
 let img = [];
@@ -59,8 +59,8 @@ function setup() {
     var params = {
         isStatic: true
       }
-    ground = Bodies.rectangle(document.body.clientWidth / 2, document.body.clientHeight - 30 , document.body.clientWidth, 100, params);
-    solduvar = Bodies.rectangle(-100,canvas.height,200,10000,params);
+    ground = Bodies.rectangle(document.body.clientWidth / 2, document.body.clientHeight , document.body.clientWidth, 100, params);
+    solduvar = Bodies.rectangle(-92,canvas.height,200,10000,params);
     sagduvar = Bodies.rectangle(canvas.width + 80,canvas.height,200,10000,params);
     World.add(world, ground);
     World.add(world, solduvar);
@@ -77,7 +77,7 @@ function setup() {
         engine: engine,
         options: {
             width: canvas.width,
-            height: canvas.height
+            height: document.body.clientHeight - 46
         }
     }); 
 
@@ -264,6 +264,7 @@ function calcWave() {
       for(y = water.suyuksekligi+water.yvalues[x];y < canvas.height ;y+= 100){
       }
     }
+     rect(0,water.tabany,canvas.width,water.tabanyukseklik);
   }
 
 
@@ -294,8 +295,6 @@ function calcWave() {
 
 
   function sucikart(){
-      fill(66, 134, 244);
-      rect(0,water.tabany,canvas.width,water.tabanyukseklik);
       if(water.cikti == 0){
       water.cikti = 1;
       for(let _box of boxes)
@@ -355,8 +354,6 @@ function calcWave() {
   }
 
   function suarttir(toplamartisyukseklik){
-   fill(66, 134, 244);   
-   rect(0,water.tabany,canvas.width,water.tabanyukseklik);
    print("SU ARTTIRMA FONKSIYONU TETIKLENDI");
    tikmetre = 1.5;
    benimvarim = setInterval(suarttirmaislem, 100);
