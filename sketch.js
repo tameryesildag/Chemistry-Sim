@@ -40,35 +40,24 @@ var water = {
 
 
 function preload() {
-  entiler.push(hidrojen1 = new enti("hidrojen1","hidrojen.png",800,600,0),hidrojen2 = new enti("hidrojen2","hidrojen.png",800,600,0),oksijen = new enti("oksijen1","oksijen.png",800,600,2));
-  for (let _enti of entiler){
-  img.push(loadImage(_enti.png));
-  print(_enti.width + " genişliğinde " + _enti.height + " yüksekliğinde bir obje oluşturuldu." );
-  }
+  engine = Engine.create();
+  world = engine.world;
+  loadImages();
 }
 
 function setup() {
     myVar = setInterval(olayGunluguEvent, 100);
     canvas = createCanvas(document.body.clientWidth, document.body.clientHeight - 46);
     background(242, 244, 247);
-    for (let _enti of entiler){
-    image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
-    }
-    engine = Engine.create();
-    world = engine.world;
     var params = {
         isStatic: true
       }
-    ground = Bodies.rectangle(document.body.clientWidth / 2, document.body.clientHeight , document.body.clientWidth, 100, params);
+    ground = Bodies.rectangle(document.body.clientWidth / 2, document.body.clientHeight, document.body.clientWidth, 100, params);
     solduvar = Bodies.rectangle(-92,canvas.height,200,10000,params);
     sagduvar = Bodies.rectangle(canvas.width + 80,canvas.height,200,10000,params);
     World.add(world, ground);
     World.add(world, solduvar);
     World.add(world, sagduvar);
-
-    for (let _enti of entiler){
-        boxes.push(Bodies.rectangle(_enti.x,_enti.y,img[_enti.simage].width / 10,img[_enti.simage].height / 7));
-    }
     Engine.run(engine);
 
     if(renderacik){
@@ -77,7 +66,7 @@ function setup() {
         engine: engine,
         options: {
             width: canvas.width,
-            height: document.body.clientHeight - 46
+            height: canvas.height
         }
     }); 
 
@@ -216,7 +205,7 @@ catch(error){
 mesaj += ("\nmouseX: " + mouseX + " mouseY: " + mouseY);
 if(entiler != null){
 for (let _enti of entiler) {
-    mesaj += ("\nentiler[" + entiler.indexOf(_enti) + "].name: " + _enti.name + " x: " + _enti.x + " y: " + _enti.y + " width: " + img[_enti.simage].width + " height: " + img[_enti.simage].height);
+    mesaj += ("\nentiler[" + entiler.indexOf(_enti) + "].name: " + _enti.name + " x: " + _enti.x + " y: " + _enti.y + " width: " + _enti.width + " height: " + _enti.height);
  }
 }
 if(boxes != null){
@@ -227,6 +216,7 @@ for (let _box of boxes) {
 mesaj += ("\nground position: " + ground.position.y);
 mesaj += ("\nimg length: " + img.length);
 mesaj += ("\nsu yüksekliği: " + water.suyuksekligi);
+mesaj += ("\nimg[0].height " + img[0].height);
 if(mesaj == sonmesaj){
     return;
 }
@@ -277,9 +267,11 @@ function calcWave() {
         entiler = [];
         boxes = [];
     }
-    var yenienti = new enti(olacakisim,"yok",img[imagebul(isim)].width,img[imagebul(isim)].height,imagebul(isim))
+    print(img[imagebul(isim)]);
+    var yenienti = new enti(olacakisim,img[imagebul(isim)].width,img[imagebul(isim)].height,imagebul(isim))
+    print(yenienti);
     entiler.push(yenienti);
-    boxes.push(Bodies.rectangle(yenienti.x,yenienti.y,img[yenienti.simage].width / 10,img[yenienti.simage].height / 7));
+    boxes.push(Bodies.rectangle(yenienti.x,yenienti.y,img[yenienti.simage].width / 7,img[yenienti.simage].height / 7));
     Matter.Body.setInertia(boxes[boxes.length - 1], Infinity);
     World.add(world, boxes[boxes.length - 1]);
     print(olacakisim + " başarıyla oluşturuldu.");
@@ -289,7 +281,7 @@ function calcWave() {
    case "hidrojen":
    return 0;
    case "oksijen":
-   return 2;
+   return 1;
    }
   }
 
@@ -307,6 +299,10 @@ function calcWave() {
           return;
       }
       Matter.Body.setPosition(ground,{x: ground.position.x, y: water.suyuksekligi - 60});
+      for(let _box of boxes){
+         entiler[boxes.indexOf(_box)].y = 10;
+         Matter.Body.setPosition(_box,{x: _box.position.x, y: 10})
+      }
   }
 
   function entirender(){
@@ -339,15 +335,13 @@ function calcWave() {
     for (let _enti of entiler) {
         if(entiler.indexOf(_enti) != secilenobje){
         _enti.x = boxes[entiler.indexOf(_enti)].position.x;
-        if(_enti.y <= 675){
+        if(_enti.y < canvas.height - _enti.height){
         _enti.y = boxes[entiler.indexOf(_enti)].position.y;
         }
         else{
-            if(_enti.y <= water.suyuksekligi - 60){
-                _enti.y = boxes[entiler.indexOf(_enti)].position.y;
-            }
+            _enti.y = canvas.height - _enti.height;
         }
-        image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
+        image(img[_enti.simage],_enti.x,_enti.y,_enti.width,_enti.height);
         }
         }
     }
@@ -380,6 +374,38 @@ function calcWave() {
       tiksayisi == 29;
       clearInterval(benimvarim);
       clearInterval(suarttirmaislem);
+  }
+
+  function loadImages(){
+      var foto;
+
+      img.push(loadImage("Images/hidrojen.png"));
+      foto = new Image();
+      foto.onload = function(){
+       img[img.length - 1].width = foto.width;
+       img[img.length - 1].height = foto.height;
+       entiekle("hidrojen");
+       entiekle("hidrojen");
+      }
+      foto.src = "Images/hidrojen.png";
+
+      img.push(loadImage("Images/oksijen.png"));
+      foto = new Image();
+      foto.onload = function(){
+        img[img.length - 1].width = foto.width;
+        img[img.length - 1].height = foto.height;
+        entiekle("oksijen");
+       }
+      foto.src = "Images/oksijen.png";
+
+    //  img.push(loadImage("Images/sulfirik.png"));
+    //  foto = new Image(); 
+    //  foto.src = "Images/sulfirik.png";                    //BOZUK
+    //  img[img.lenght - 1].width = foto.width;
+    //  img[img.length - 1].height = foto.height;
+
+      print("img[0].width: " + img[0].width);
+      print("Images has been loaded.")
   }
 
   
