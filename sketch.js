@@ -399,7 +399,9 @@ function calcWave() {
        foto.onload = function(){
          img[img.length - 1].width = foto.width;
          img[img.length - 1].height = foto.height;
+         document.title = "Loading..."
          sleep(5000);
+         document.title = "Chemistry Simulator";
          entiekle("hidrojen");
          entiekle("hidrojen");
          entiekle("oksijen");
