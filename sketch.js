@@ -376,33 +376,40 @@ function calcWave() {
       clearInterval(suarttirmaislem);
   }
 
-  function loadImages(){
-      var foto;
+  function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+      if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+    }
+  }
 
+  function loadImages(){
       img.push(loadImage("Images/hidrojen.png"));
+      img.push(loadImage("Images/oksijen.png"));
+
+      var foto;
       foto = new Image();
       foto.onload = function(){
        img[img.length - 1].width = foto.width;
        img[img.length - 1].height = foto.height;
-       entiekle("hidrojen");
-       entiekle("hidrojen");
+
+       foto = new Image();
+       foto.onload = function(){
+         img[img.length - 1].width = foto.width;
+         img[img.length - 1].height = foto.height;
+         sleep(5000);
+         entiekle("hidrojen");
+         entiekle("hidrojen");
+         entiekle("oksijen");
+        }
+       foto.src = "Images/oksijen.png";
+
       }
       foto.src = "Images/hidrojen.png";
 
-      img.push(loadImage("Images/oksijen.png"));
-      foto = new Image();
-      foto.onload = function(){
-        img[img.length - 1].width = foto.width;
-        img[img.length - 1].height = foto.height;
-        entiekle("oksijen");
-       }
-      foto.src = "Images/oksijen.png";
 
-    //  img.push(loadImage("Images/sulfirik.png"));
-    //  foto = new Image(); 
-    //  foto.src = "Images/sulfirik.png";                    //BOZUK
-    //  img[img.lenght - 1].width = foto.width;
-    //  img[img.length - 1].height = foto.height;
 
       print("img[0].width: " + img[0].width);
       print("Images has been loaded.")
