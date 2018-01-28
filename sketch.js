@@ -396,17 +396,17 @@ function calcWave() {
       var foto;
       foto = new Image();
       foto.onload = function(){
-       img[img.length - 1].width = foto.width;
-       img[img.length - 1].height = foto.height;
+       img[img.length - 1].width = foto.width * 7 ;
+       img[img.length - 1].height = foto.height * 7;
 
        foto = new Image();
        foto.onload = function(){
-         img[img.length - 1].width = foto.width;
-         img[img.length - 1].height = foto.height;
+         img[img.length - 1].width = foto.width * 7;
+         img[img.length - 1].height = foto.height * 7;
          foto = new Image();
          foto.onload = function(){
-          img[img.length - 1].width = foto.width;
-          img[img.length - 1].height = foto.height;   
+          img[img.length - 1].width = foto.width * 7;
+          img[img.length - 1].height = foto.height * 7;   
           uyu();
           sahneAyarla();
          }
