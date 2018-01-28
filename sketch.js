@@ -271,7 +271,7 @@ function calcWave() {
     var yenienti = new enti(olacakisim,img[imagebul(isim)].width,img[imagebul(isim)].height,imagebul(isim))
     print(yenienti);
     entiler.push(yenienti);
-    boxes.push(Bodies.rectangle(yenienti.x,yenienti.y,img[yenienti.simage].width / 7,img[yenienti.simage].height / 7));
+    boxes.push(Bodies.rectangle(yenienti.x,yenienti.y,img[yenienti.simage].width,img[yenienti.simage].height));
     Matter.Body.setInertia(boxes[boxes.length - 1], Infinity);
     World.add(world, boxes[boxes.length - 1]);
     print(olacakisim + " başarıyla oluşturuldu.");
@@ -282,6 +282,10 @@ function calcWave() {
    return 0;
    case "oksijen":
    return 1;
+   case "sulfirik":
+   return 2;
+   case "sülfirik":
+   return 2;
    }
   }
 
@@ -325,7 +329,7 @@ function calcWave() {
          if(_enti.name == entiler[secilenobje].name){
   
          }
-         image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width / 7,img[_enti.simage].height / 7);
+         image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width,img[_enti.simage].height);
       }
       }    
   }
@@ -388,7 +392,7 @@ function calcWave() {
   function loadImages(){
       img.push(loadImage("Images/hidrojen.png"));
       img.push(loadImage("Images/oksijen.png"));
-
+      img.push(loadImage("Images/sulfirik.png"));
       var foto;
       foto = new Image();
       foto.onload = function(){
@@ -399,12 +403,14 @@ function calcWave() {
        foto.onload = function(){
          img[img.length - 1].width = foto.width;
          img[img.length - 1].height = foto.height;
-         document.title = "Loading..."
-         sleep(5000);
-         document.title = "Chemistry Simulator";
-         entiekle("hidrojen");
-         entiekle("hidrojen");
-         entiekle("oksijen");
+         foto = new Image();
+         foto.onload = function(){
+          img[img.length - 1].width = foto.width;
+          img[img.length - 1].height = foto.height;   
+          uyu();
+          sahneAyarla();
+         }
+         foto.src = "Images/sulfirik.png";
         }
        foto.src = "Images/oksijen.png";
 
@@ -417,4 +423,14 @@ function calcWave() {
       print("Images has been loaded.")
   }
 
-  
+  function sahneAyarla(){
+      entiekle("hidrojen");
+      entiekle("sulfirik");
+      entiekle("oksijen");
+  }
+
+  function uyu(){
+    document.title = "Loading..."
+    sleep(5000);
+    document.title = "Chemistry Simulator";
+  }
