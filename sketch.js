@@ -116,6 +116,27 @@ for(let hidrojenolmasigereken of entiler){
      }
    }
  }
+ for(let potaskostikolmasigereken of entiler){
+     for(let sulfirikolmasigereken of entiler){
+         if(potaskostikolmasigereken.name.includes("potaskostik")){
+             if(sulfirikolmasigereken.name.includes("sulfirik")){
+                 if(dist(potaskostikolmasigereken.x,potaskostikolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
+                     if(water.cikti == 0){
+                         sucikart();
+                     }
+                     else{
+                         suarttir(200);
+                     }
+                     var silinecekler = [];
+                     silinecekler.push(entiler.indexOf(potaskostikolmasigereken),entiler.indexOf(sulfirikolmasigereken));
+                     silinecekler.sort(function(a, b){return a-b});
+                     yoket(silinecekler[1],silinecekler[0]);
+                 }
+             }
+         }
+     }
+ }
+
 }
 if(water.cikti == 1){
     calcWave();
@@ -286,6 +307,8 @@ function calcWave() {
    return 2;
    case "sülfirik":
    return 2;
+   case "potaskostik":
+   return 3;
    }
   }
 
@@ -393,13 +416,15 @@ function calcWave() {
       img.push(loadImage("Images/hidrojen.png"));
       img.push(loadImage("Images/oksijen.png"));
       img.push(loadImage("Images/sulfirik.png"));
+      img.push(loadImage("Images/potaskostik.png"));
       var foto;
       foto = new Image();
       foto.onload = function(){
-       img[img.length - 1].width = foto.width ;
-       img[img.length - 1].height = foto.height;
+       img[img.length - 1].width = foto.width;
+       img[img.length - 1].height = foto.height;      
+                                                        
+       foto = new Image();                              
 
-       foto = new Image();
        foto.onload = function(){
          img[img.length - 1].width = foto.width;
          img[img.length - 1].height = foto.height;
@@ -407,8 +432,14 @@ function calcWave() {
          foto.onload = function(){
           img[img.length - 1].width = foto.width;
           img[img.length - 1].height = foto.height;   
+          foto = new Image();
+          foto.onload = function(){
+        //  img[img.lenght - 1].width = foto.width;
+         // img[img.lenght - 1].height = foto.height;
           uyu();
           sahneAyarla();
+          }
+          foto.src = "Images/potaskostik.png";
          }
          foto.src = "Images/sulfirik.png";
         }
@@ -424,9 +455,9 @@ function calcWave() {
   }
 
   function sahneAyarla(){
-      entiekle("hidrojen");
       entiekle("sulfirik");
       entiekle("oksijen");
+      entiekle("potaskostik");
   }
 
   function uyu(){
