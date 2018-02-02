@@ -165,6 +165,14 @@ else{
 
 }
 
+function keyPressed() {
+    if (keyCode === DELETE) {
+      if(tiklandi == 1){
+          yoket(secilenobje);
+      }
+    }
+  }
+
 function mousePressed() {
     if(mobilkontrol() == true){   //MOBIL
         for (let _enti of entiler) {
