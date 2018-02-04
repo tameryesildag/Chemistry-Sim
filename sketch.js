@@ -247,6 +247,8 @@ mesaj += ("\nground position: " + ground.position.y);
 mesaj += ("\nimg length: " + img.length);
 mesaj += ("\nsu yüksekliği: " + water.suyuksekligi);
 mesaj += ("\nimg[0].height " + img[0].height);
+var deneme = water.tabany - water.tabanyukseklik;
+mesaj += ("\nYAZSANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + deneme);
 if(mesaj == sonmesaj){
     return;
 }
@@ -286,7 +288,7 @@ function calcWave() {
       }
     }
     var deneme = water.tabany - water.tabanyukseklik;
-     rect(0,water.tabany + deneme,canvas.width,water.tabanyukseklik + deneme);  //water.tabanyukseklik
+     rect(0,water.tabany - deneme,canvas.width,water.tabanyukseklik + deneme);  //water.tabanyukseklik
      
   }
 
