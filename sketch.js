@@ -131,6 +131,7 @@ for(let hidrojenolmasigereken of entiler){
                      silinecekler.push(entiler.indexOf(potaskostikolmasigereken),entiler.indexOf(sulfirikolmasigereken));
                      silinecekler.sort(function(a, b){return a-b});
                      yoket(silinecekler[1],silinecekler[0]);
+                     entiekle("potasyumsulfat");
                  }
              }
          }
@@ -251,6 +252,7 @@ if(mesaj == sonmesaj){
 }
 else{
     print(mesaj);
+    print(water);
     sonmesaj = mesaj;
 }
 }
@@ -283,7 +285,9 @@ function calcWave() {
       for(y = water.suyuksekligi+water.yvalues[x];y < canvas.height ;y+= 100){
       }
     }
-     rect(0,water.tabany,canvas.width,water.tabanyukseklik);
+    var deneme = water.tabany - water.tabanyukseklik;
+     rect(0,water.tabany + deneme,canvas.width,water.tabanyukseklik + deneme);  //water.tabanyukseklik
+     
   }
 
 
@@ -317,6 +321,8 @@ function calcWave() {
    return 2;
    case "potaskostik":
    return 3;
+   case "potasyumsulfat":
+   return 4;
    }
   }
 
@@ -425,6 +431,7 @@ function calcWave() {
       img.push(loadImage("Images/oksijen.png"));
       img.push(loadImage("Images/sulfirik.png"));
       img.push(loadImage("Images/potaskostik.png"));
+      img.push(loadImage("Images/potasyumsulfat.png"));
       var foto;
       foto = new Image();
       foto.onload = function(){
@@ -442,10 +449,12 @@ function calcWave() {
           img[img.length - 1].height = foto.height;   
           foto = new Image();
           foto.onload = function(){
-        //  img[img.lenght - 1].width = foto.width;
-         // img[img.lenght - 1].height = foto.height;
-          uyu();
-          sahneAyarla();
+          foto = new Image();
+          foto.onload = function(){
+           uyu();
+           sahneAyarla();
+          }
+          foto.src = "Images/potasyumsulfat.png";
           }
           foto.src = "Images/potaskostik.png";
          }
