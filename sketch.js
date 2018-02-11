@@ -1,41 +1,58 @@
 ///<reference path="p5.d.ts"/>
 ///<reference path="matter.d.ts"/>
 var canvas;
-let entiler = [];
+
 var hidrojen;
 var renderacik = false;
 var tiklandi = 0;
 var secilenobje;
+
 let img = [];
+var boxes = [];
+let entiler = [];
+
 var Engine = Matter.Engine;
 var World = Matter.World;
 var Bodies = Matter.Bodies
 var Render = Matter.Render;
 var engine;
 var world;
+
 var ground;
 var solduvar;
 var sagduvar;
+
 var benimvarim;
 var tikmetre;
 var tiksayisi = 0;
-var boxes = [];
+
+var benimvarim2;
+var hedefr;
+var hedefg;
+var hedefb;
+var tiksayisi2 = 0;
+
 var mesaj = "";
 var myVar;
 var sonmesaj = "";
 
-var su = {
+var fenolftaleincikti = 0;
+var sucikti = 0;
+var sivi = {
     tabany:0,
     tabanyukseklik:0,
     cikti: 0,
-    suyuksekligi:0,
+    siviyuksekligi:0,
     xbosluk: 15,
     w: 0,
     theta: 0.0,
     amplitude: 5.0,
     period: 1000.0,
     dx:0,
-    ydegerleri:0
+    ydegerleri:0,
+    r:66,  
+    g:134,
+    b:244
 };
 
 
@@ -77,12 +94,12 @@ function setup() {
         Matter.Body.setInertia(_box, Infinity);
     }
     world.gravity.y = 1.5;
-    su.w = canvas.width + 16;
-    su.dx = (TWO_PI / su.period) * su.xbosluk;
-    su.ydegerleri = new Array(floor(su.w/su.xbosluk));
-    su.suyuksekligi = canvas.height / 2 + canvas.height / 3;
-    su.tabanyukseklik = su.suyuksekligi;
-    su.tabany = canvas.height - canvas.height / 7;
+    sivi.w = canvas.width + 16;
+    sivi.dx = (TWO_PI / sivi.period) * sivi.xbosluk;
+    sivi.ydegerleri = new Array(floor(sivi.w/sivi.xbosluk));
+    sivi.siviyuksekligi = canvas.height / 2 + canvas.height / 3;
+    sivi.tabanyukseklik = sivi.siviyuksekligi;
+    sivi.tabany = canvas.height - canvas.height / 7;
     olayGunluguEvent();
 }
 
@@ -97,13 +114,13 @@ for(let hidrojenolmasigereken of entiler){
           if(hidrojenolmasigereken.name.includes("hidrojen")){
               if(hidrojenolmasigereken2.name.includes("hidrojen") && hidrojenolmasigereken2.name != hidrojenolmasigereken.name){
                 if(dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken.x,hidrojenolmasigereken.y) < 50 && dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken2.x,hidrojenolmasigereken2.y) < 50){
-                 if(su.cikti == 0){
-                    sucikart();
+                 if(sivi.cikti == 0){
+                    sivicikart();
                  }
                  else{
-                    suarttir(200);
+                    siviarttir(200);
                  }
-                   Matter.Body.setPosition(ground,{x: ground.position.x, y: su.suyuksekligi - 60});
+                   Matter.Body.setPosition(ground,{x: ground.position.x, y: sivi.siviyuksekligi - 60});
                    var silinecekler = [];
                    silinecekler.push(entiler.indexOf(oksijenolmasigereken),entiler.indexOf(hidrojenolmasigereken),entiler.indexOf(hidrojenolmasigereken2));
                    silinecekler.sort(function(a, b){return a-b});
@@ -121,11 +138,11 @@ for(let hidrojenolmasigereken of entiler){
          if(potaskostikolmasigereken.name.includes("potaskostik")){
              if(sulfirikolmasigereken.name.includes("sulfirik")){
                  if(dist(potaskostikolmasigereken.x,potaskostikolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
-                     if(su.cikti == 0){
-                         sucikart();
+                     if(sivi.cikti == 0){
+                         sivicikart();
                      }
                      else{
-                         suarttir(200);
+                         siviarttir(200);
                      }
                      var silinecekler = [];
                      silinecekler.push(entiler.indexOf(potaskostikolmasigereken),entiler.indexOf(sulfirikolmasigereken));
@@ -137,9 +154,24 @@ for(let hidrojenolmasigereken of entiler){
          }
      }
  }
-
+try{
+ for(let bazolmasigereken of entiler){
+     if(bazolmasigereken.name.includes("potaskostik")){
+         if(fenolftaleincikti == 1){
+           if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
+            fenolftaleincikti == 0;   
+            yoket(entiler.indexOf(bazolmasigereken));
+            sivirenkdegistir(224, 100, 222);
+          }
+        } 
+    } 
+ }
 }
-if(su.cikti == 1){
+catch(exception){
+    print(exception);
+}
+}
+if(sivi.cikti == 1){
     calcWave();
     renderWave();
 }
@@ -245,16 +277,18 @@ for (let _box of boxes) {
 }
 mesaj += ("\nground position: " + ground.position.y);
 mesaj += ("\nimg length: " + img.length);
-mesaj += ("\nsu yüksekliği: " + su.suyuksekligi);
+mesaj += ("\nsivi yüksekliği: " + sivi.siviyuksekligi);
 mesaj += ("\nimg[0].height " + img[0].height);
-var deneme = su.tabany - su.tabanyukseklik;
-mesaj += ("\nYAZSANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + deneme);
+var deneme = sivi.tabany - sivi.tabanyukseklik;
+mesaj += ("\nYAZSANAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " + deneme); 
+mesaj += ("\nsıvı.r: " + sivi.r + " sivi.g: " + sivi.g + " sivi.b: " + sivi.b);
+mesaj += ("\nhedefr: " + hedefr + " hedefg: " + hedefg + " hedefb. " + hedefb);
 if(mesaj == sonmesaj){
     return;
 }
 else{
     print(mesaj);
-    print(su);
+    print(sivi);
     sonmesaj = mesaj;
 }
 }
@@ -267,28 +301,28 @@ function mobilkontrol() {
 
 function calcWave() {
     // Theta'nın artışı (açısal momentum için farklı değerler dene)
-    su.theta += 0.10;
+    sivi.theta += 0.10;
   
     //Her bir x için sin() fonksiyonu kullanarak bir y hesaplama
-    var x = su.theta;
-    for (var i = 0; i < su.ydegerleri.length; i++) {
-      su.ydegerleri[i] = sin(x)*su.amplitude;
-      x+=su.dx;
+    var x = sivi.theta;
+    for (var i = 0; i < sivi.ydegerleri.length; i++) {
+      sivi.ydegerleri[i] = sin(x)*sivi.amplitude;
+      x+=sivi.dx;
     }
   }
   
 
   function renderWave() {
     noStroke();
-    fill(66, 134, 244);
+    fill(sivi.r, sivi.g, sivi.b); 
     // Her bir noktaya elips çizerek dalgayı oluştur
-    for (var x = 0; x < su.ydegerleri.length; x++) {
-      ellipse(x*su.xbosluk, su.suyuksekligi+su.ydegerleri[x], 100, 100);
-      for(y = su.suyuksekligi+su.ydegerleri[x];y < canvas.height ;y+= 100){
+    for (var x = 0; x < sivi.ydegerleri.length; x++) {
+      ellipse(x*sivi.xbosluk, sivi.siviyuksekligi+sivi.ydegerleri[x], 100, 100);
+      for(y = sivi.siviyuksekligi+sivi.ydegerleri[x];y < canvas.height ;y+= 100){
       }
     }
-     deneme = su.tabany - su.tabanyukseklik;
-     rect(0,su.tabany,canvas.width,su.tabanyukseklik);  //su.tabanyukseklik   
+     deneme = sivi.tabany - sivi.tabanyukseklik;
+     rect(0,sivi.tabany,canvas.width,sivi.tabanyukseklik);  //sivi.tabanyukseklik   
      
   }
 
@@ -328,26 +362,56 @@ function calcWave() {
    }
   }
 
-
   function sucikart(){
-      if(su.cikti == 0){
-      su.cikti = 1;
+    if(sivi.cikti == 0){
+        sivicikart();
+        sucikti = 1;
+        sivi.r = 66;
+        sivi.g = 134;
+        sivi.b = 244;
+        return;
+    }
+    if(sivi.cikti == 1 && sucikti == 0){
+        sivikaldir();
+        sivicikart();
+        sucikti = 1;
+        sivi.r = 66;
+        sivi.g = 134;
+        sivi.b = 244;
+        return;
+    }
+    if(sucikti == 1){
+        siviarttir(200);
+    }
+  }
+  function sivicikart(){
+      if(sivi.cikti == 0){   
+      sivi.cikti = 1;
       for(let _box of boxes)
+      
       Matter.Body.applyForce(_box,{x: 0, y: 0}, {x: 0, y: -0.1});
       }
       else{
           if(tiksayisi == 0){
-          suarttir(200);
+          siviarttir(200);
           }
           return;
       }
-      Matter.Body.setPosition(ground,{x: ground.position.x, y: su.suyuksekligi - 60});
+      Matter.Body.setPosition(ground,{x: ground.position.x, y: sivi.siviyuksekligi - 60});
       for(let _box of boxes){
          entiler[boxes.indexOf(_box)].y = 10;
          Matter.Body.setPosition(_box,{x: _box.position.x, y: 10})
       }
   }
-
+  function fenolftaleincikart(){
+      sivikaldir();
+      sivicikart();
+      sivi.r = 202;
+      sivi.g = 206;
+      sivi.b = 206;
+      benimvarim2 = setInterval(sivirenkdegistrimeislem, 100);
+      fenolftaleincikti = 1;
+  }
   function entirender(){
     if(tiklandi == 1){
         if(entiler != null){
@@ -372,7 +436,7 @@ function calcWave() {
       }
       }    
   }
-
+      
 
   if(entiler != null){
     for (let _enti of entiler) {
@@ -390,35 +454,64 @@ function calcWave() {
     }
   }
 
-  function suarttir(toplamartisyukseklik){
-   print("SU ARTTIRMA FONKSIYONU TETIKLENDI");
+  function siviarttir(toplamartisyukseklik){
+   print("sivi ARTTIRMA FONKSIYONU TETIKLENDI");
    tikmetre = 1.5;
-   benimvarim = setInterval(suarttirmaislem, 100);
+   benimvarim = setInterval(siviarttirmaislem, 100);
   }
-  function suarttirmaislem(){
+  function siviarttirmaislem(){
       print("TIKSAYISI: " + tiksayisi)
       if(tiksayisi == 30){
           clearInterval(benimvarim);
           tiksayisi = 0;
           return;
       }
-       su.suyuksekligi -= tikmetre;
-       su.tabanyukseklik += tikmetre + 0.2;
-       su.tabany -= tikmetre + 0.2;
+       sivi.siviyuksekligi -= tikmetre;
+       sivi.tabanyukseklik += tikmetre + 0.2;
+       sivi.tabany -= tikmetre + 0.2;
        Matter.Body.setPosition(ground,{x: ground.position.x, y: ground.position.y - tikmetre});
        tiksayisi += 1;
   }
-  function sukaldir(){ 
-      su.cikti = 0;
-      su.suyuksekligi = canvas.height / 2 + canvas.height / 3;
-      su.tabany = canvas.height - 100;
-      su.tabanyukseklik = su.suyuksekligi;
+  function sivikaldir(){
+      fenolftaleincikti = 0; 
+      sucikti = 0;
+      sivi.cikti = 0;
+      sivi.siviyuksekligi = canvas.height / 2 + canvas.height / 3;
+      sivi.tabany = canvas.height - 100;
+      sivi.tabanyukseklik = sivi.siviyuksekligi;
       Matter.Body.setPosition(ground,{x: document.body.clientWidth / 2, y: document.body.clientHeight - 30});
       tiksayisi == 29;
       clearInterval(benimvarim);
-      clearInterval(suarttirmaislem);
+      clearInterval(siviarttirmaislem);
   }
-
+  function sivirenkdegistir(r,g,b){
+    hedefr = r;
+    hedefg = g;
+    hedefb = b;
+  }
+  function sivirenkdegistrimeislem(){
+  if(fenolftaleincikti == 1){
+  if(sivi.r < hedefr){
+      sivi.r += 1;
+  }
+  if(sivi.g < hedefg){
+      sivi.g += 1;
+  }
+  if(sivi.b < hedefb){
+      sivi.b += 1;
+  }
+   
+  if(sivi.r > hedefr){
+      sivi.r -= 1;
+  }
+  if(sivi.g > hedefg){
+      sivi.g -= 1;
+  }
+  if(sivi.b > hedefb){
+      sivi.b -= 1;
+  }
+  }
+}
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -478,7 +571,6 @@ function calcWave() {
       entiekle("oksijen");
       entiekle("potaskostik");
   }
-
   function uyu(){
     document.title = "Loading..."
     sleep(5000);
