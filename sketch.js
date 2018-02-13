@@ -238,6 +238,7 @@ function mousePressed() {
             boxes[secilenobje].position.x = entiler[secilenobje].x;
             boxes[secilenobje].position.y = entiler[secilenobje].y;
             secilenobje = -1;
+            document.getElementById("boxbox").style.visibility = 'hidden';
             return;
         }
     if(entiler != null){    
@@ -246,6 +247,11 @@ function mousePressed() {
         tiklandi = 1;
         secilenobje = entiler.indexOf(_enti);
         boxes[secilenobje].timeScale = 0;
+        var src;
+        src = _enti.name.replace(/[0-9]/g, '');
+        src = "Images/" + src + "png";
+        document.getElementById("boxbox").style.visibility = 'visible';
+        document.getElementById("elementimg").src =src;
      } 
     }
    }
