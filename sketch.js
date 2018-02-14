@@ -1,7 +1,7 @@
 ///<reference path="p5.d.ts"/>
 ///<reference path="matter.d.ts"/>
 var canvas;
-
+var _info;
 var hidrojen;
 var renderacik = false;
 var tiklandi = 0;
@@ -36,8 +36,7 @@ var mesaj = "";
 var myVar;
 var sonmesaj = "";
 
-var fenolftaleincikti = 0;
-var sucikti = 0;
+var asilisim;
 var sivi = {
     tabany:0,
     tabanyukseklik:0,
@@ -52,7 +51,8 @@ var sivi = {
     ydegerleri:0,
     r:66,  
     g:134,
-    b:244
+    b:244,
+    sivitipi:0 // 1:su    2:fenolftalein
 };
 
 
@@ -63,6 +63,7 @@ function preload() {
 }
 
 function setup() {
+    _info = new info();
     myVar = setInterval(olayGunluguEvent, 100);
     canvas = createCanvas(document.body.clientWidth, document.body.clientHeight - 46);
     background(242, 244, 247);
@@ -157,9 +158,9 @@ for(let hidrojenolmasigereken of entiler){
 try{
  for(let bazolmasigereken of entiler){
      if(bazolmasigereken.name.includes("potaskostik")){
-         if(fenolftaleincikti == 1){
+         if(sivi.cikti == 1 && sivi.sivitipi == 2){
            if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
-            fenolftaleincikti == 0;   
+            sivi.sivitipi == 0;   
             yoket(entiler.indexOf(bazolmasigereken));
             sivirenkdegistir(224, 100, 222);
           }
@@ -247,9 +248,18 @@ function mousePressed() {
         tiklandi = 1;
         secilenobje = entiler.indexOf(_enti);
         boxes[secilenobje].timeScale = 0;
+        asilisim = _enti.name.replace(/[0-9]/g, '');
         var src;
-        src = _enti.name.replace(/[0-9]/g, '');
+        src = asilisim
         src = "Images/" + src + "png";
+        document.getElementById("typeid").innerHTML = getType(asilisim);
+        document.getElementById("nameid").innerHTML = getID(asilisim);
+        if(getType(asilisim) == "Element"){
+            document.getElementById("numberid").innerHTML = "(" + getNumber(asilisim) + ")"; 
+        }
+        else{
+            document.getElementById("numberid").innerHTML = " "; 
+        }
         document.getElementById("boxbox").style.visibility = 'visible';
         document.getElementById("elementimg").src =src;
      } 
@@ -371,23 +381,25 @@ function calcWave() {
   function sucikart(){
     if(sivi.cikti == 0){
         sivicikart();
-        sucikti = 1;
+        sivi.sivitipi = 1;
         sivi.r = 66;
         sivi.g = 134;
         sivi.b = 244;
         return;
     }
-    if(sivi.cikti == 1 && sucikti == 0){
+    if(sivi.cikti == 1 && sivi.sivitipi != 1){
         sivikaldir();
         sivicikart();
-        sucikti = 1;
+        sivi.sivitipi = 1;
         sivi.r = 66;
         sivi.g = 134;
         sivi.b = 244;
         return;
     }
-    if(sucikti == 1){
+    if(sivi.cikti == 1 && sivi.sivitipi == 1){
+        if(tiksayisi == 0){
         siviarttir(200);
+        }
     }
   }
   function sivicikart(){
@@ -410,13 +422,26 @@ function calcWave() {
       }
   }
   function fenolftaleincikart(){
+      if(sivi.cikti == 0){
+          sivicikart();
+          sivi.r = 202;
+          sivi.g = 206;
+          sivi.b = 206;
+      }
+      if(sivi.cikti == 1 && sivi.sivitipi != 2){
       sivikaldir();
       sivicikart();
       sivi.r = 202;
       sivi.g = 206;
       sivi.b = 206;
       benimvarim2 = setInterval(sivirenkdegistrimeislem, 100);
-      fenolftaleincikti = 1;
+      sivi.sivitipi = 2;
+      }
+      if(sivi.cikti == 1 && sivi.sivitipi == 2){
+          if(tiksayisi == 0){
+       siviarttir(200);
+          }
+      }
   }
   function entirender(){
     if(tiklandi == 1){
@@ -478,9 +503,8 @@ function calcWave() {
        Matter.Body.setPosition(ground,{x: ground.position.x, y: ground.position.y - tikmetre});
        tiksayisi += 1;
   }
-  function sivikaldir(){
-      fenolftaleincikti = 0; 
-      sucikti = 0;
+  function sivikaldir(){ 
+      sivi.sivitipi = 0;
       sivi.cikti = 0;
       sivi.siviyuksekligi = canvas.height / 2 + canvas.height / 3;
       sivi.tabany = canvas.height - 100;
@@ -496,7 +520,7 @@ function calcWave() {
     hedefb = b;
   }
   function sivirenkdegistrimeislem(){
-  if(fenolftaleincikti == 1){
+  if(sivi.sivitipi == 2){
   if(sivi.r < hedefr){
       sivi.r += 1;
   }
@@ -582,3 +606,39 @@ function calcWave() {
     sleep(5000);
     document.title = "Chemistry Simulator";
   }
+  function getType(isim){
+    switch(isim){
+    case "sulfirik.":
+    return "Strong Acid";
+    case"potaskostik.":
+    return "Strong Base";
+    case"potasyumsulfat.":
+    return "Salt";
+    case"hidrojen.":
+    return "Element";
+    case"oksijen.":
+    return "Element";
+       }
+     }
+  function getID(isim){
+    switch(isim){
+        case "sulfirik.":
+        return "Sulfuric acid";
+        case"potaskostik.":
+        return "Potassium hydroxide";
+        case"potasyumsulfat.":
+        return "Potassium sulfate";
+        case"hidrojen.":
+        return "Hydrogen";
+        case"oksijen.":
+        return "Oxygen";
+    }
+  }   
+  function getNumber(isim){
+    switch(isim){
+        case"hidrojen.":
+        return "1";
+        case"oksijen.":
+        return "8";
+    }
+  }   

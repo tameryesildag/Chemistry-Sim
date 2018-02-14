@@ -33,6 +33,13 @@ body{
   display: block;
   margin: 0 auto;
 }
+.box p{
+ display: block;
+ margin: 0 auto;
+ text-align: center;
+ font-weight: bold;
+ color: black;
+}
 html {
     box-sizing: border-box;
   }
