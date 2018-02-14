@@ -1,7 +1,6 @@
 ///<reference path="p5.d.ts"/>
 ///<reference path="matter.d.ts"/>
 var canvas;
-var _info;
 var hidrojen;
 var renderacik = false;
 var tiklandi = 0;
@@ -63,7 +62,6 @@ function preload() {
 }
 
 function setup() {
-    _info = new info();
     myVar = setInterval(olayGunluguEvent, 100);
     canvas = createCanvas(document.body.clientWidth, document.body.clientHeight - 46);
     background(242, 244, 247);
