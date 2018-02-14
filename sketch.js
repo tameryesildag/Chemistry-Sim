@@ -595,9 +595,9 @@ function calcWave() {
   }
 
   function sahneAyarla(){
-      entiekle("sulfirik");
-      entiekle("oksijen");
-      entiekle("potaskostik");
+    //  entiekle("sulfirik");
+    //  entiekle("oksijen");
+    //  entiekle("potaskostik");
   }
   function uyu(){
     document.title = "Loading..."
