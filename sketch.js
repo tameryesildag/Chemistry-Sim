@@ -1,6 +1,7 @@
 ///<reference path="p5.d.ts"/>
 ///<reference path="matter.d.ts"/>
 var canvas;
+var _info;
 var hidrojen;
 var renderacik = false;
 var tiklandi = 0;
@@ -31,6 +32,13 @@ var hedefg;
 var hedefb;
 var tiksayisi2 = 0;
 
+var benimvarim3;
+var hedefr2;
+var hedefg2;
+var hedefb2;
+var tiksayisi3 = 0;
+
+
 var mesaj = "";
 var myVar;
 var sonmesaj = "";
@@ -51,7 +59,7 @@ var sivi = {
     r:66,  
     g:134,
     b:244,
-    sivitipi:0 // 1:su    2:fenolftalein
+    sivitipi:0 // 1:su    2:fenolftalein   3:metiloranj
 };
 
 
@@ -114,7 +122,7 @@ for(let hidrojenolmasigereken of entiler){
               if(hidrojenolmasigereken2.name.includes("hidrojen") && hidrojenolmasigereken2.name != hidrojenolmasigereken.name){
                 if(dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken.x,hidrojenolmasigereken.y) < 50 && dist(oksijenolmasigereken.x,oksijenolmasigereken.y,hidrojenolmasigereken2.x,hidrojenolmasigereken2.y) < 50){
                  if(sivi.cikti == 0){
-                    sivicikart();
+                    sucikart();
                  }
                  else{
                     siviarttir(200);
@@ -153,7 +161,7 @@ for(let hidrojenolmasigereken of entiler){
          }
      }
  }
-try{
+
  for(let bazolmasigereken of entiler){
      if(bazolmasigereken.name.includes("potaskostik")){
          if(sivi.cikti == 1 && sivi.sivitipi == 2){
@@ -165,15 +173,37 @@ try{
         } 
     } 
  }
+
+for(let bazolmasigereken of entiler){
+    if(bazolmasigereken.name.includes("potaskostik")){
+        if(sivi.cikti == 1 && sivi.sivitipi == 3){
+            if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
+                sivi.sivitipi == 0;
+                yoket(entiler.indexOf(bazolmasigereken));
+                sivirenkdegistir(226, 181, 15);
+            }
+        }
+    }
 }
-catch(exception){
-    print(exception);
+
+for(let asitolmasigereken of entiler){
+    if(asitolmasigereken.name.includes("sulfirik")){
+        if(sivi.cikti == 1 && sivi.sivitipi == 3){
+          if(asitolmasigereken.y >= sivi.siviyuksekligi - 50){
+              sivi.sivitipi == 0;
+              yoket(entiler.indexOf(asitolmasigereken));
+              sivirenkdegistir(214, 29, 29);
+          }
+        }
+    }
 }
-}
+
 if(sivi.cikti == 1){
     calcWave();
     renderWave();
-}
+  }
+ }
+
 }
 
 function yoket(){
@@ -336,8 +366,20 @@ function calcWave() {
       }
     }
      deneme = sivi.tabany - sivi.tabanyukseklik;
-     rect(0,sivi.tabany,canvas.width,sivi.tabanyukseklik);  //sivi.tabanyukseklik   
-     
+     rect(0,sivi.tabany,canvas.width,sivi.tabanyukseklik);  //sivi.tabanyukseklik 
+     textSize(32);
+     if(sivi.sivitipi == 1){
+     fill(255,255,255);
+     text('Water', 10, canvas.height - 20);  
+     }
+     if(sivi.sivitipi == 2){
+     fill(0,0,0);
+     text('Phenolphthalein', 10, canvas.height - 20); 
+     }
+     if(sivi.sivitipi == 3){
+     fill(0,0,0);
+     text('Methyl orange', 10, canvas.height - 20);
+     }
   }
 
 
@@ -358,6 +400,7 @@ function calcWave() {
     Matter.Body.setInertia(boxes[boxes.length - 1], Infinity);
     World.add(world, boxes[boxes.length - 1]);
     print(olacakisim + " başarıyla oluşturuldu.");
+    entirender();
   }
   function imagebul(isim){
    switch(isim){
@@ -432,7 +475,7 @@ function calcWave() {
       sivi.r = 202;
       sivi.g = 206;
       sivi.b = 206;
-      benimvarim2 = setInterval(sivirenkdegistrimeislem, 100);
+      benimvarim2 = setInterval(fenoftaleinrenkdegistirmeislem, 100);
       sivi.sivitipi = 2;
       }
       if(sivi.cikti == 1 && sivi.sivitipi == 2){
@@ -440,6 +483,75 @@ function calcWave() {
        siviarttir(200);
           }
       }
+  }
+  function fenoftaleinrenkdegistirmeislem(){
+    if(sivi.sivitipi == 2){
+    if(sivi.r < hedefr){
+        sivi.r += 1;
+    }
+    if(sivi.g < hedefg){
+        sivi.g += 1;
+    }
+    if(sivi.b < hedefb){
+        sivi.b += 1;
+    }
+     
+    if(sivi.r > hedefr){
+        sivi.r -= 1;
+    }
+    if(sivi.g > hedefg){
+        sivi.g -= 1;
+    }
+    if(sivi.b > hedefb){
+        sivi.b -= 1;
+    }
+    }
+  }
+
+  function metiloranjcikart(){
+    if(sivi.cikti == 0){
+        sivicikart();
+        sivi.r = 202;
+        sivi.g = 206;
+        sivi.b = 206;
+    }
+    if(sivi.cikti == 1 && sivi.sivitipi != 3){
+    sivikaldir();
+    sivicikart();
+    sivi.r = 202;
+    sivi.g = 206;
+    sivi.b = 206;
+    benimvarim3 = setInterval(metiloranjrenkdegistirmeislem, 100);
+    sivi.sivitipi = 3;
+    }
+    if(sivi.cikti == 1 && sivi.sivitipi == 3){
+        if(tiksayisi == 0){
+          siviarttir(200);
+        }
+    }
+  }
+  function metiloranjrenkdegistirmeislem(){
+    if(sivi.sivitipi == 3){
+    if(sivi.r < hedefr){
+        sivi.r += 1;
+    }
+    if(sivi.g < hedefg){
+        sivi.g += 1;
+    }
+    if(sivi.b < hedefb){
+        sivi.b += 1;
+    }
+     
+    if(sivi.r > hedefr){
+        sivi.r -= 1;
+    }
+    if(sivi.g > hedefg){
+        sivi.g -= 1;
+    }
+    if(sivi.b > hedefb){
+        sivi.b -= 1;
+    }
+    }
   }
   function entirender(){
     if(tiklandi == 1){
@@ -517,29 +629,6 @@ function calcWave() {
     hedefg = g;
     hedefb = b;
   }
-  function sivirenkdegistrimeislem(){
-  if(sivi.sivitipi == 2){
-  if(sivi.r < hedefr){
-      sivi.r += 1;
-  }
-  if(sivi.g < hedefg){
-      sivi.g += 1;
-  }
-  if(sivi.b < hedefb){
-      sivi.b += 1;
-  }
-   
-  if(sivi.r > hedefr){
-      sivi.r -= 1;
-  }
-  if(sivi.g > hedefg){
-      sivi.g -= 1;
-  }
-  if(sivi.b > hedefb){
-      sivi.b -= 1;
-  }
-  }
-}
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -595,15 +684,16 @@ function calcWave() {
   }
 
   function sahneAyarla(){
-    //  entiekle("sulfirik");
-    //  entiekle("oksijen");
-    //  entiekle("potaskostik");
+   //   entiekle("sulfirik");
+   //   entiekle("oksijen");
+   //   entiekle("potaskostik");
   }
   function uyu(){
     document.title = "Loading..."
     sleep(5000);
     document.title = "Chemistry Simulator";
   }
+
   function getType(isim){
     switch(isim){
     case "sulfirik.":
