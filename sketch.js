@@ -73,6 +73,7 @@ function setup() {
     myVar = setInterval(olayGunluguEvent, 100);
     canvas = createCanvas(document.body.clientWidth, document.body.clientHeight - 46);
     background(242, 244, 247);
+    canvas.parent('sketch-holder');
     var params = {
         isStatic: true
       }
