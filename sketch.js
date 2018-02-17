@@ -184,7 +184,7 @@ for(let bazolmasigereken of entiler){
             }
         }
     }
-}
+} 
 
 for(let asitolmasigereken of entiler){
     if(asitolmasigereken.name.includes("sulfirik")){
@@ -196,7 +196,7 @@ for(let asitolmasigereken of entiler){
           }
         }
     }
-}
+} 
 
 if(sivi.cikti == 1){
     calcWave();
@@ -214,6 +214,7 @@ for(let _box of boxes){
 }
 boxes = [];
 tiklandi = 0;
+secilenobje = -1;
 }
 
 else{
@@ -384,6 +385,7 @@ function calcWave() {
 
 
   function entiekle(isim){
+    secilenobje = -1;
     var numara = 1;
     var olacakisim = isim + random(1,9999);
     if(entiler != null && boxes != null){
@@ -401,7 +403,9 @@ function calcWave() {
     World.add(world, boxes[boxes.length - 1]);
     print(olacakisim + " başarıyla oluşturuldu.");
     entirender();
+    secilenobje = -1;
   }
+
   function imagebul(isim){
    switch(isim){
    case "hidrojen":
@@ -530,6 +534,7 @@ function calcWave() {
         }
     }
   }
+
   function metiloranjrenkdegistirmeislem(){
     if(sivi.sivitipi == 3){
     if(sivi.r < hedefr){
@@ -629,6 +634,7 @@ function calcWave() {
     hedefg = g;
     hedefb = b;
   }
+
   function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -684,9 +690,7 @@ function calcWave() {
   }
 
   function sahneAyarla(){
-   //   entiekle("sulfirik");
-   //   entiekle("oksijen");
-   //   entiekle("potaskostik");
+   //BAŞLANGIÇTA SAHNEYE EKLENECEK ENTILER
   }
   function uyu(){
     document.title = "Loading..."
