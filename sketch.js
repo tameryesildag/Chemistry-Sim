@@ -147,7 +147,7 @@ for(let hidrojenolmasigereken of entiler){
              if(sulfirikolmasigereken.name.includes("sulfirik")){
                  if(dist(potaskostikolmasigereken.x,potaskostikolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
                      if(sivi.cikti == 0){
-                         sivicikart();
+                         sucikart();
                      }
                      else{
                          siviarttir(200);
@@ -162,6 +162,28 @@ for(let hidrojenolmasigereken of entiler){
          }
      }
  }
+
+ for(let hidroklorukolmasigereken of entiler){
+     for(let kalsiyumkarbonatolmasigereken of entiler){
+      if(hidroklorukolmasigereken.name.includes("hidrokloruk")){
+        if(kalsiyumkarbonatolmasigereken.name.includes("kalsiyumkarbonat")){
+            if(dist(hidroklorukolmasigereken.x,hidroklorukolmasigereken.y,kalsiyumkarbonatolmasigereken.x,kalsiyumkarbonatolmasigereken.y) < 75){
+              if(sivi.cikti == 0){
+                  sucikart();
+              }
+              else{
+                  siviarttir(200);
+              }
+              var silinecekler = [];
+              silinecekler.push(entiler.indexOf(hidroklorukolmasigereken),entiler.indexOf(kalsiyumkarbonatolmasigereken));
+              silinecekler.sort(function(a,b){return a-b});
+              yoket(silinecekler[1],silinecekler[0]);
+              entiekle("kalsiyumklorur");
+            }
+        }
+     }
+  }  
+}
 
  for(let bazolmasigereken of entiler){
      if(bazolmasigereken.name.includes("potaskostik")){
@@ -421,6 +443,12 @@ function calcWave() {
    return 3;
    case "potasyumsulfat":
    return 4;
+   case "hidrokloruk":
+   return 5;
+   case "kalsiyumkarbonat":
+   return 6;
+   case "kalsiyumklorur":
+   return 7; 
    }
   }
 
@@ -651,6 +679,9 @@ function calcWave() {
       img.push(loadImage("Images/sulfirik.png"));
       img.push(loadImage("Images/potaskostik.png"));
       img.push(loadImage("Images/potasyumsulfat.png"));
+      img.push(loadImage("Images/hidrokloruk.png"));
+      img.push(loadImage("Images/kalsiyumkarbonat.png"));
+      img.push(loadImage("Images/kalsiyumklorur.png"));
       var foto;
       foto = new Image();
       foto.onload = function(){
@@ -670,8 +701,19 @@ function calcWave() {
           foto.onload = function(){
           foto = new Image();
           foto.onload = function(){
-           uyu();
-           sahneAyarla();
+           foto = new Image();
+           foto.onload = function(){
+            foto = new Image();
+            foto.onload = function(){
+             foto = new Image();
+             foto.onload = function(){
+                sahneAyarla();
+             }
+             foto.src = "Images/kalsiyumklorur.png";
+            }
+            foto.src = "Images/kalsiyumkarbonat.png";
+           }
+           foto.src = "Images/hidrokloruk.png";
           }
           foto.src = "Images/potasyumsulfat.png";
           }
@@ -692,6 +734,7 @@ function calcWave() {
 
   function sahneAyarla(){
    //BAŞLANGIÇTA SAHNEYE EKLENECEK ENTILER
+   entiekle("hidrokloruk");
   }
   function uyu(){
     document.title = "Loading..."
@@ -703,10 +746,16 @@ function calcWave() {
     switch(isim){
     case "sulfirik.":
     return "Strong Acid";
+    case "hidrokloruk.":
+    return "Storng Acid";
     case"potaskostik.":
     return "Strong Base";
     case"potasyumsulfat.":
     return "Salt";
+    case"kalsiyumklorur.":
+    return "Salt";
+    case"kalsiyumkarbonat.":
+    return "Carbonate";
     case"hidrojen.":
     return "Element";
     case"oksijen.":
@@ -717,6 +766,12 @@ function calcWave() {
     switch(isim){
         case "sulfirik.":
         return "Sulfuric acid";
+        case "hidrokloruk.":
+        return "Hydrochloric acid";
+        case"kalsiyumkarbonat.":
+        return "Calcium carbonate";
+        case"kalsiyumklorur.":
+        return "Calcium chloride";
         case"potaskostik.":
         return "Potassium hydroxide";
         case"potasyumsulfat.":
