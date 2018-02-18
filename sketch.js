@@ -734,7 +734,6 @@ function calcWave() {
 
   function sahneAyarla(){
    //BAŞLANGIÇTA SAHNEYE EKLENECEK ENTILER
-   entiekle("hidrokloruk");
   }
   function uyu(){
     document.title = "Loading..."
