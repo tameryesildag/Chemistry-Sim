@@ -22,6 +22,8 @@ var ground;
 var solduvar;
 var sagduvar;
 
+var karbondioksitler = [];
+
 var benimvarim;
 var tikmetre;
 var tiksayisi = 0;
@@ -62,6 +64,10 @@ var sivi = {
     sivitipi:0 // 1:su    2:fenolftalein   3:metiloranj
 };
 
+var karbondioksit = {
+    x:0,
+    y:0
+}
 
 function preload() {
   engine = Engine.create();
@@ -114,6 +120,14 @@ function setup() {
 function draw() {
     background(242, 244, 247);
     entirender();
+
+if(karbondioksitler[0] != null){
+    for(let _karbondioksit of karbondioksitler){
+       image(img[imagebul("karbondioksit")], _karbondioksit.x , _karbondioksit.y, img[imagebul("karbondioksit")].width / 2, img[imagebul("karbondioksit")].height / 2);
+        _karbondioksit.y -= 1.3;
+    }
+} 
+
 if(entiler != null){
 for(let oksijenolmasigereken of entiler){
 for(let hidrojenolmasigereken of entiler){
@@ -179,6 +193,7 @@ for(let hidrojenolmasigereken of entiler){
               silinecekler.sort(function(a,b){return a-b});
               yoket(silinecekler[1],silinecekler[0]);
               entiekle("kalsiyumklorur");
+              karbondioksitcikart();
             }
         }
      }
@@ -449,6 +464,8 @@ function calcWave() {
    return 6;
    case "kalsiyumklorur":
    return 7; 
+   case "karbondioksit":
+   return 8;
    }
   }
 
@@ -615,6 +632,7 @@ function calcWave() {
 
   if(entiler != null){
     for (let _enti of entiler) {
+        if(boxes[entiler.indexOf(_enti)] != null){
         if(entiler.indexOf(_enti) != secilenobje){
         _enti.x = boxes[entiler.indexOf(_enti)].position.x;
         if(_enti.y < canvas.height - _enti.height){
@@ -626,6 +644,7 @@ function calcWave() {
         image(img[_enti.simage],_enti.x,_enti.y,_enti.width,_enti.height);
         }
         }
+      }  
     }
   }
 
@@ -682,6 +701,7 @@ function calcWave() {
       img.push(loadImage("Images/hidrokloruk.png"));
       img.push(loadImage("Images/kalsiyumkarbonat.png"));
       img.push(loadImage("Images/kalsiyumklorur.png"));
+      img.push(loadImage("Images/karbondioksit.png"));
       var foto;
       foto = new Image();
       foto.onload = function(){
@@ -707,7 +727,11 @@ function calcWave() {
             foto.onload = function(){
              foto = new Image();
              foto.onload = function(){
-                sahneAyarla();
+                foto = new Image();
+                foto.onload = function(){
+                   uyu();
+                }
+                foto.src = "Images/karbondioksit.png";
              }
              foto.src = "Images/kalsiyumklorur.png";
             }
@@ -731,9 +755,21 @@ function calcWave() {
       print("img[0].width: " + img[0].width);
       print("Images has been loaded.")
   }
-
+  function karbondioksitcikart(){
+    for(i = 0; i < 5; i++){
+        var yenikarbondioksit = new enti();
+        yenikarbondioksit.x = random(30, canvas.width - 30);
+        yenikarbondioksit.y = random(canvas.height - 250, canvas.height);
+        print(yenikarbondioksit.x);
+        karbondioksitler.push(yenikarbondioksit);
+    }
+    for(let _karbondioksit of karbondioksitler){
+        print(_karbondioksit.x);
+    }
+  }
   function sahneAyarla(){
    //BAŞLANGIÇTA SAHNEYE EKLENECEK ENTILER
+   entiekle("hidrokloruk");
   }
   function uyu(){
     document.title = "Loading..."
