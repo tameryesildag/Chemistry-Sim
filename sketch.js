@@ -42,6 +42,12 @@ var hedefg2;
 var hedefb2;
 var tiksayisi3 = 0;
 
+var tepkime;
+
+var benimvarim4;
+var tepkimeresim;
+var saydamlik = 255;
+var saydamlikazalmamiktari = 0.1;
 
 var mesaj = "";
 var myVar;
@@ -75,6 +81,7 @@ function preload() {
   engine = Engine.create();
   world = engine.world;
   loadImages();
+  tepkime = loadImage("Reactions/koh+h2so4.png");
 }
 
 function setup() {
@@ -122,9 +129,16 @@ function setup() {
 function draw() {
     background(242, 244, 247);
     entirender();
+if(tepkimeresim != null){
+   tint(255,saydamlik);
+   image(img[imagebul("koh+h2so4")],20,20);
+   saydamlik -= saydamlikazalmamiktari;
+   saydamlikazalmamiktari += 0.01;
+}
 
 if(karbondioksitler[0] != null){
     for(let _karbondioksit of karbondioksitler){
+        tint(255,255);
        image(img[imagebul("karbondioksit")], _karbondioksit.x , _karbondioksit.y, img[imagebul("karbondioksit")].width / 2, img[imagebul("karbondioksit")].height / 2);
         _karbondioksit.y -= 1.3;
     }
@@ -132,6 +146,7 @@ if(karbondioksitler[0] != null){
 
 if(hidrojen2ler[0] != null){
     for(let _hidrojen2 of hidrojen2ler){
+        tint(255,255);
         image(img[imagebul("hidrojen2")], _hidrojen2.x, _hidrojen2.y, img[imagebul("hidrojen2")].width / 2, img[imagebul("hidrojen2")].height / 2);
         _hidrojen2.y -= 1.3;
     }
@@ -180,6 +195,7 @@ for(let hidrojenolmasigereken of entiler){
                      silinecekler.sort(function(a, b){return a-b});
                      yoket(silinecekler[1],silinecekler[0]);
                      entiekle("potasyumsulfat");
+                     tepkimegoster("koh+h2so4");
                  }
              }
          }
@@ -311,7 +327,7 @@ else{
       tiklandi = 0;
     }
 }
-
+document.getElementById("boxbox").style.visibility = 'hidden';
 }
 
 function keyPressed() {
@@ -524,6 +540,8 @@ function calcWave() {
    return 12;
    case "karbonikasit":
    return 13;
+   case "koh+h2so4":
+   return 14;
    }
   }
 
@@ -682,6 +700,7 @@ function calcWave() {
          if(_enti.name == entiler[secilenobje].name){
   
          }
+         tint(255,255);
          image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width,img[_enti.simage].height);
       }
       }    
@@ -699,6 +718,7 @@ function calcWave() {
         else{
             _enti.y = canvas.height - _enti.height;
         }
+        tint(255,255);
         image(img[_enti.simage],_enti.x,_enti.y,_enti.width,_enti.height);
         }
         }
@@ -724,6 +744,13 @@ function calcWave() {
        Matter.Body.setPosition(ground,{x: ground.position.x, y: ground.position.y - tikmetre});
        tiksayisi += 1;
   }
+
+  function tepkimegoster(isim){
+    saydamlik = 255;
+    saydamlikazalmamiktari = 0.1;
+    tepkimeresim = isim;
+   }
+
   function sivikaldir(){ 
       sivi.sivitipi = 0;
       sivi.cikti = 0;
@@ -765,22 +792,23 @@ function calcWave() {
       img.push(loadImage("Images/magnezyumsulfat.png"));
       img.push(loadImage("Images/kalsiyumoksit.png"));
       img.push(loadImage("Images/karbonikasit.png"));
+      img.push(loadImage("Reactions/koh+h2so4.png"));
 
       var foto;
       foto = new Image();
       foto.onload = function(){
-       img[img.length - 1].width = foto.width;
-       img[img.length - 1].height = foto.height;      
+      // img[img.length - 1].width = foto.width;
+      // img[img.length - 1].height = foto.height;      
                                                         
        foto = new Image();                              
 
        foto.onload = function(){
-         img[img.length - 1].width = foto.width;
-         img[img.length - 1].height = foto.height;
+        // img[img.length - 1].width = foto.width;
+        // img[img.length - 1].height = foto.height;
          foto = new Image();
          foto.onload = function(){
-          img[img.length - 1].width = foto.width;
-          img[img.length - 1].height = foto.height;   
+         // img[img.length - 1].width = foto.width;
+        //  img[img.length - 1].height = foto.height;   
           foto = new Image();
           foto.onload = function(){
           foto = new Image();
@@ -803,7 +831,11 @@ function calcWave() {
                        foto.onload = function(){
                          foto = new Image();
                          foto.onload = function(){
-                           uyu();
+                           foto = new Image();
+                           foto.onload = function(){
+                               uyu();
+                           }
+                           foto.src = "Reactions/koh+h2so4.png";
                          }
                          foto.src = "Images/karbonikasit.png";
                        }
