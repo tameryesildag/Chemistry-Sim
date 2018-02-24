@@ -219,6 +219,7 @@ for(let hidrojenolmasigereken of entiler){
               yoket(silinecekler[1],silinecekler[0]);
               entiekle("kalsiyumklorur");
               karbondioksitcikart();
+              tepkimegoster("caco3+hcl");
             }
         }
      }
@@ -236,11 +237,30 @@ for(let magnezyumolmasigereken of entiler){
                   yoket(silinecekler[1],silinecekler[0]);
                   entiekle("magnezyumsulfat");
                   hidrojen2cikart();
+                  tepkimegoster("mg+h2so4");
                 }
             }
         }
     }
 }
+
+for(let magnezyumolmasigereken of entiler){
+    for(let hidroklorikolmasigereken of entiler){
+        if(magnezyumolmasigereken.name.includes("magnezyum")){
+            if(hidroklorikolmasigereken.name.includes("hidroklorik")){
+                if(dist(magnezyumolmasigereken.x,magnezyumolmasigereken.y,hidroklorikolmasigereken.x,hidroklorikolmasigereken.y) < 75){
+                     var silinecekler = [];
+                     silinecekler.push(entiler.indexOf(magnezyumolmasigereken), entiler.indexOf(hidroklorikolmasigereken));
+                     silinecekler.sort(function(a,b) {return a-b});
+                     yoket(silinecekler[1],silinecekler[0]);
+                     entiekle("magnezyumklorur");
+                     hidrojen2cikart();
+
+                } 
+            } 
+        } 
+    } 
+} 
 
 for(let kalsiyumoksitolmasigereken of entiler){
     for(let karbonikasitolmasigereken of entiler){
@@ -258,6 +278,7 @@ for(let kalsiyumoksitolmasigereken of entiler){
                     silinecekler.sort(function(a,b) {return a-b});
                     yoket(silinecekler[1], silinecekler[0]);
                     entiekle("kalsiyumkarbonat");
+                    tepkimegoster("cao+h2co3");
                 }
             }
         }
@@ -334,6 +355,7 @@ function keyPressed() {
     if (keyCode === DELETE) {
       if(tiklandi == 1){
           yoket(secilenobje);
+          secilenobje = -1;
       }
     }
   }
@@ -542,6 +564,14 @@ function calcWave() {
    return 13;
    case "koh+h2so4":
    return 14;
+   case "caco3+hcl":
+   return 15;
+   case "mg+h2so4":
+   return 16;
+   case "cao+h2co3":
+   return 17;
+   case "magnezyumklorur":
+   return 18;
    }
   }
 
@@ -793,6 +823,10 @@ function calcWave() {
       img.push(loadImage("Images/kalsiyumoksit.png"));
       img.push(loadImage("Images/karbonikasit.png"));
       img.push(loadImage("Reactions/koh+h2so4.png"));
+      img.push(loadImage("Reactions/caco3+hcl.png"))
+      img.push(loadImage("Reactions/mg+h2so4.png"));
+      img.push(loadImage("Reactions/cao+h2co3.png"));
+      img.push(loadImage("Images/magnezyumklorur.png"));
 
       var foto;
       foto = new Image();
@@ -833,7 +867,23 @@ function calcWave() {
                          foto.onload = function(){
                            foto = new Image();
                            foto.onload = function(){
-                               uyu();
+                               foto = new Image();
+                               foto. onload = function(){
+                                 foto = new Image();
+                                 foto.onload= function(){
+                                   foto = new Image();
+                                   foto.onload = function(){
+                                    foto = new Image();
+                                    foto.onload = function(){
+
+                                    }
+                                    foto.src = "Images/magnezyumklorur.png"
+                                   }
+                                   foto.src = "Reactions/cao+h2co3.png";
+                                 }
+                                 foto.src = "Reactions/mg+h2so4.png";
+                               }
+                               foto.src = "Reactions/caco3+hcl.png";
                            }
                            foto.src = "Reactions/koh+h2so4.png";
                          }
@@ -928,6 +978,8 @@ function calcWave() {
     return "Metal oxide";
     case "karbonikasit.":
     return "Acid";
+    case "magnezyumklorur.":
+    return "Salt";
        }
      }
   function getID(isim){
@@ -956,6 +1008,9 @@ function calcWave() {
         return "Calcium oxide";
         case "karbonikasit.":
         return "Carbonic acid";
+        case "magnezyumklorur.":
+        return "Magnesium chloride";
+
     }
   }   
   function getNumber(isim){
