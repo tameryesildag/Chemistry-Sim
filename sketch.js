@@ -129,9 +129,16 @@ function setup() {
 function draw() {
     background(242, 244, 247);
     entirender();
+
+    var fps = frameRate();
+    fill(255);
+    stroke(0);
+    textSize(12);
+    text("FPS: " + fps.toFixed(2), canvas.width - 70, 10);
+
 if(tepkimeresim != null){
    tint(255,saydamlik);
-   image(img[imagebul("koh+h2so4")],20,20);
+   image(img[imagebul(tepkimeresim)],20,20);
    saydamlik -= saydamlikazalmamiktari;
    saydamlikazalmamiktari += 0.01;
 }
@@ -142,6 +149,9 @@ if(karbondioksitler[0] != null){
        image(img[imagebul("karbondioksit")], _karbondioksit.x , _karbondioksit.y, img[imagebul("karbondioksit")].width / 2, img[imagebul("karbondioksit")].height / 2);
         _karbondioksit.y -= 1.3;
     }
+    if(karbondioksitler[0].y < 0){
+        karbondioksitler[0] = null;
+    }
 } 
 
 if(hidrojen2ler[0] != null){
@@ -149,6 +159,9 @@ if(hidrojen2ler[0] != null){
         tint(255,255);
         image(img[imagebul("hidrojen2")], _hidrojen2.x, _hidrojen2.y, img[imagebul("hidrojen2")].width / 2, img[imagebul("hidrojen2")].height / 2);
         _hidrojen2.y -= 1.3;
+    }
+    if(hidrojen2ler[0].y <= 0){
+        hidrojen2ler[0] = null;
     }
 }
 
@@ -228,7 +241,7 @@ for(let hidrojenolmasigereken of entiler){
 
 for(let magnezyumolmasigereken of entiler){
     for(let sulfirikolmasigereken of entiler){
-        if(magnezyumolmasigereken.name.includes("magnezyum")){
+        if(magnezyumolmasigereken.name.includes("magnezyumelement")){
             if(sulfirikolmasigereken.name.includes("sulfirik")){
                 if(dist(magnezyumolmasigereken.x,magnezyumolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
                   var silinecekler = [];
@@ -246,7 +259,7 @@ for(let magnezyumolmasigereken of entiler){
 
 for(let magnezyumolmasigereken of entiler){
     for(let hidroklorikolmasigereken of entiler){
-        if(magnezyumolmasigereken.name.includes("magnezyum")){
+        if(magnezyumolmasigereken.name.includes("magnezyumelement")){
             if(hidroklorikolmasigereken.name.includes("hidroklorik")){
                 if(dist(magnezyumolmasigereken.x,magnezyumolmasigereken.y,hidroklorikolmasigereken.x,hidroklorikolmasigereken.y) < 75){
                      var silinecekler = [];
@@ -279,6 +292,24 @@ for(let kalsiyumoksitolmasigereken of entiler){
                     yoket(silinecekler[1], silinecekler[0]);
                     entiekle("kalsiyumkarbonat");
                     tepkimegoster("cao+h2co3");
+                }
+            }
+        }
+    }
+}
+
+for(let sodyumolmasigereken of entiler){
+    for(let hidroklorikolmasigereken of entiler){
+        if(sodyumolmasigereken.name.includes("sodyumelement")){
+            if(hidroklorikolmasigereken.name.includes("hidroklorik")){
+                if(dist(sodyumolmasigereken.x,sodyumolmasigereken.y,hidroklorikolmasigereken.x,hidroklorikolmasigereken.y) < 75){
+                    var silinecekler = [];
+                    silinecekler.push(entiler.indexOf(sodyumolmasigereken), entiler.indexOf(hidroklorikolmasigereken));
+                    silinecekler.sort(function(a,b) {return a-b});
+                    yoket(silinecekler[1], silinecekler[0]);
+                    entiekle("sodyumklorur");
+                    hidrojen2cikart();
+                    tepkimegoster("na+hcl");
                 }
             }
         }
@@ -554,7 +585,7 @@ function calcWave() {
    return 8;
    case "hidrojen2":
    return 9;
-   case "magnezyum":
+   case "magnezyumelement":
    return 10;
    case "magnezyumsulfat":
    return 11;
@@ -572,6 +603,12 @@ function calcWave() {
    return 17;
    case "magnezyumklorur":
    return 18;
+   case "sodyumelement":
+   return 19;
+   case "sodyumklorur":
+   return 20;
+   case "na+hcl":
+   return 21;
    }
   }
 
@@ -761,6 +798,15 @@ function calcWave() {
    tikmetre = 1.5;
    benimvarim = setInterval(siviarttirmaislem, 100);
   }
+  function reset(){
+   entiler = []
+   boxes = [];
+   sivikaldir();
+   tepkimeresim = null;
+   hidrojen2ler = [];
+  karbondioksitler = [];
+   document.getElementById("boxbox").style.visibility = 'hidden';
+  }
   function siviarttirmaislem(){
       print("TIKSAYISI: " + tiksayisi)
       if(tiksayisi == 30){
@@ -808,25 +854,28 @@ function calcWave() {
   }
 
   function loadImages(){
-      img.push(loadImage("Images/hidrojen.png"));
-      img.push(loadImage("Images/oksijen.png"));
-      img.push(loadImage("Images/sulfirik.png"));
-      img.push(loadImage("Images/potaskostik.png"));
-      img.push(loadImage("Images/potasyumsulfat.png"));
-      img.push(loadImage("Images/hidroklorik.png"));
-      img.push(loadImage("Images/kalsiyumkarbonat.png"));
-      img.push(loadImage("Images/kalsiyumklorur.png"));
-      img.push(loadImage("Images/karbondioksit.png"));
-      img.push(loadImage("Images/hidrojen2.png"));
-      img.push(loadImage("Images/magnezyum.png"));
-      img.push(loadImage("Images/magnezyumsulfat.png"));
-      img.push(loadImage("Images/kalsiyumoksit.png"));
-      img.push(loadImage("Images/karbonikasit.png"));
-      img.push(loadImage("Reactions/koh+h2so4.png"));
-      img.push(loadImage("Reactions/caco3+hcl.png"))
-      img.push(loadImage("Reactions/mg+h2so4.png"));
-      img.push(loadImage("Reactions/cao+h2co3.png"));
-      img.push(loadImage("Images/magnezyumklorur.png"));
+      img.push(loadImage("Images/hidrojen.png")); //0
+      img.push(loadImage("Images/oksijen.png")); //1
+      img.push(loadImage("Images/sulfirik.png")); //2
+      img.push(loadImage("Images/potaskostik.png")); //3
+      img.push(loadImage("Images/potasyumsulfat.png")); //4
+      img.push(loadImage("Images/hidroklorik.png")); //5
+      img.push(loadImage("Images/kalsiyumkarbonat.png")); //6
+      img.push(loadImage("Images/kalsiyumklorur.png")); //7
+      img.push(loadImage("Images/karbondioksit.png")); //8
+      img.push(loadImage("Images/hidrojen2.png")); //9
+      img.push(loadImage("Images/magnezyumelement.png")); //10
+      img.push(loadImage("Images/magnezyumsulfat.png")); //11
+      img.push(loadImage("Images/kalsiyumoksit.png")); //12
+      img.push(loadImage("Images/karbonikasit.png")); //13
+      img.push(loadImage("Reactions/koh+h2so4.png")); //14
+      img.push(loadImage("Reactions/caco3+hcl.png")) //15
+      img.push(loadImage("Reactions/mg+h2so4.png")); //16
+      img.push(loadImage("Reactions/cao+h2co3.png")); //17
+      img.push(loadImage("Images/magnezyumklorur.png")); //18
+      img.push(loadImage("Images/sodyumelement.png")); //19
+      img.push(loadImage("Images/sodyumklorur.png")); //20
+      img.push(loadImage("Reactions/na+hcl.png")); //21
 
       var foto;
       foto = new Image();
@@ -875,7 +924,19 @@ function calcWave() {
                                    foto.onload = function(){
                                     foto = new Image();
                                     foto.onload = function(){
+                                     foto = new Image();
+                                     foto.onload = function(){
+                                       foto = new Image();
+                                       foto.onload = function(){
+                                        foto = new Image();
+                                        foto.onload = function(){
 
+                                        }
+                                        foto.src = "Reactions/na+hcl.png";
+                                       }
+                                       foto.src = "Images/sodyumklorur.png";
+                                     }
+                                     foto.src = "Images/sodyumelement.png";
                                     }
                                     foto.src = "Images/magnezyumklorur.png"
                                    }
@@ -893,7 +954,7 @@ function calcWave() {
                       }
                       foto.src = "Images/magnezyumsulfat.png";
                     }
-                    foto.src = "Images/magnezyum.png";
+                    foto.src = "Images/magnezyumelement.png";
                    }
                    foto.src = "Images/hidrojen2.png";
                 }
@@ -972,7 +1033,7 @@ function calcWave() {
     return "Element";
     case"magnezyumsulfat.":
     return "Salt";
-    case "magnezyum.":
+    case "magnezyumelement.":
     return "Element";
     case "kalsiyumoksit.":
     return "Metal oxide";
@@ -980,6 +1041,11 @@ function calcWave() {
     return "Acid";
     case "magnezyumklorur.":
     return "Salt";
+    case "sodyumelement.":
+    return "Element";
+    case "sodyumklorur.":
+    return "Salt";
+
        }
      }
   function getID(isim){
@@ -1002,7 +1068,7 @@ function calcWave() {
         return "Oxygen";
         case "magnezyumsulfat.":
         return "Magnesium sulfate";
-        case "magnezyum.":
+        case "magnezyumelement.":
         return "Magnesium";
         case "kalsiyumoksit.":
         return "Calcium oxide";
@@ -1010,7 +1076,10 @@ function calcWave() {
         return "Carbonic acid";
         case "magnezyumklorur.":
         return "Magnesium chloride";
-
+        case "sodyumelement.":
+        return "Sodium";
+        case "sodyumklorur":
+        return "Sodium chloride";
     }
   }   
   function getNumber(isim){
@@ -1019,7 +1088,9 @@ function calcWave() {
         return "1";
         case"oksijen.":
         return "8";
-        case "magnezyum.":
+        case "magnezyumelement.":
         return "12";
+        case "sodyumelement.":
+        return "11";
     }
   }   
