@@ -192,28 +192,52 @@ for(let hidrojenolmasigereken of entiler){
      }
    }
  }
- for(let potaskostikolmasigereken of entiler){
-     for(let sulfirikolmasigereken of entiler){
-         if(potaskostikolmasigereken.name.includes("potaskostik")){
-             if(sulfirikolmasigereken.name.includes("sulfirik")){
-                 if(dist(potaskostikolmasigereken.x,potaskostikolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
+ for(let bazolmasigereken of entiler){
+     for(let asitolmasigereken of entiler){
+         if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit")){
+             if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("hidroklorik")){
+                 if(dist(bazolmasigereken.x,bazolmasigereken.y,asitolmasigereken.x,asitolmasigereken.y) < 75){
                      if(sivi.cikti == 0){
                          sucikart();
                      }
                      else{
                          siviarttir(200);
                      }
-                     var silinecekler = [];
-                     silinecekler.push(entiler.indexOf(potaskostikolmasigereken),entiler.indexOf(sulfirikolmasigereken));
-                     silinecekler.sort(function(a, b){return a-b});
-                     yoket(silinecekler[1],silinecekler[0]);
-                     entiekle("potasyumsulfat");
-                     tepkimegoster("koh+h2so4");
+                        var silinecekler = [];
+                        silinecekler.push(entiler.indexOf(bazolmasigereken),entiler.indexOf(asitolmasigereken));
+                        silinecekler.sort(function(a, b){return a-b});
+                        yoket(silinecekler[1],silinecekler[0]);
+
+                     if(asitolmasigereken.name.includes("sulfirik") && bazolmasigereken.name.includes("potaskostik")){
+                        entiekle("potasyumsulfat");
+                        tepkimegoster("koh+h2so4");
+                        }
+                     if(asitolmasigereken.name.includes("nitrikasit") && bazolmasigereken.name.includes("potaskostik")){
+                         entiekle("potasyumnitrat");
+                         tepkimegoster("hno3+koh");
+                     }
+                     if(asitolmasigereken.name.includes("hidroklorik") && bazolmasigereken.name.includes("potaskostik")){
+                         entiekle("potasyumklorur");
+                         tepkimegoster("hcl+koh");
+                     }   
+                     if(asitolmasigereken.name.includes("hidroklorik") && bazolmasigereken.name.includes("sodyumhidroksit")){
+                         entiekle("sodyumklorur");
+                         tepkimegoster("hcl+naoh");
+                     }
+                     if(asitolmasigereken.name.includes("sulfirik") && bazolmasigereken.name.includes("sodyumhidroksit")){
+                         entiekle("sodyumsulfat");
+                         tepkimegoster("h2so4+naoh");
+                     }
+                     if(asitolmasigereken.name.includes("nitrikasit") && bazolmasigereken.name.includes("sodyumhidroksit")){
+                         entiekle("sodyumnitrat");
+                         tepkimegoster("hno3+naoh");
+                     }
                  }
              }
          }
      }
  }
+
 
  for(let hidroklorikolmasigereken of entiler){
      for(let kalsiyumkarbonatolmasigereken of entiler){
@@ -329,7 +353,7 @@ for(let sodyumolmasigereken of entiler){
  }
 
 for(let bazolmasigereken of entiler){
-    if(bazolmasigereken.name.includes("potaskostik")){
+    if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit")){
         if(sivi.cikti == 1 && sivi.sivitipi == 3){
             if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
                 sivi.sivitipi == 0;
@@ -341,7 +365,7 @@ for(let bazolmasigereken of entiler){
 } 
 
 for(let asitolmasigereken of entiler){
-    if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("hidroklorik")){
+    if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("nitrikasit")){
         if(sivi.cikti == 1 && sivi.sivitipi == 3){
           if(asitolmasigereken.y >= sivi.siviyuksekligi - 50){
               sivi.sivitipi == 0;
@@ -526,7 +550,7 @@ function calcWave() {
      textSize(32);
      if(sivi.sivitipi == 1){
      fill(255,255,255);
-     text('Water', 10, canvas.height - 20);  
+     text('Water (H₂O)', 10, canvas.height - 20);  
      }
      if(sivi.sivitipi == 2){
      fill(0,0,0);
@@ -609,6 +633,28 @@ function calcWave() {
    return 20;
    case "na+hcl":
    return 21;
+   case "hno3+koh":
+   return 22;
+   case "potasyumnitrat":
+   return 23;
+   case "nitrikasit":
+   return 24;
+   case "hcl+koh":
+   return 25;
+   case "potasyumklorur":
+   return 26;
+   case "sodyumhidroksit":
+   return 27;
+   case "hcl+naoh":
+   return 28;
+   case "h2so4+naoh":
+   return 29;
+   case "sodyumsulfat":
+   return 30;
+   case "hno3+naoh":
+   return 31;
+   case "sodyumnitrat":
+   return 32;
    }
   }
 
@@ -758,17 +804,19 @@ function calcWave() {
                  boxes[entisirasi].position.x = mouseX;
              }
          }
+
          if(mouseY > 0 && mouseY < canvas.height){
           if(_enti.name == entiler[secilenobje].name){
               _enti.y = mouseY;
               boxes[entisirasi].position.y = mouseY;
           }
-         }
+      }
          if(_enti.name == entiler[secilenobje].name){
   
          }
          tint(255,255);
          image(img[_enti.simage],_enti.x,_enti.y,img[_enti.simage].width,img[_enti.simage].height);
+         
       }
       }    
   }
@@ -791,6 +839,7 @@ function calcWave() {
         }
       }  
     }
+    
   }
 
   function siviarttir(toplamartisyukseklik){
@@ -876,7 +925,17 @@ function calcWave() {
       img.push(loadImage("Images/sodyumelement.png")); //19
       img.push(loadImage("Images/sodyumklorur.png")); //20
       img.push(loadImage("Reactions/na+hcl.png")); //21
-
+      img.push(loadImage("Reactions/hno3+koh.png")); //22
+      img.push(loadImage("Images/potasyumnitrat.png")) //23
+      img.push(loadImage("Images/nitrikasit.png")); //24
+      img.push(loadImage("Reactions/hcl+koh.png")); //25
+      img.push(loadImage("Images/potasyumklorur.png")); //26
+      img.push(loadImage("Images/sodyumhidroksit.png")); //27
+      img.push(loadImage("Reactions/hcl+naoh.png")); //28
+      img.push(loadImage("Reactions/h2so4+naoh.png")); //29
+      img.push(loadImage("Images/sodyumsulfat.png")); //30
+      img.push(loadImage("Reactions/hno3+naoh.png")); //31
+      img.push(loadImage("Images/sodyumnitrat.png")); //32
       var foto;
       foto = new Image();
       foto.onload = function(){
@@ -930,7 +989,51 @@ function calcWave() {
                                        foto.onload = function(){
                                         foto = new Image();
                                         foto.onload = function(){
-
+                                         foto = new Image();
+                                         foto.onload = function(){
+                                           foto = new Image();
+                                           foto.onload = function(){
+                                             foto = new Image();
+                                             foto.onload = function(){
+                                              foto = new Image();
+                                              foto.onload = function(){
+                                                foto = new Image();
+                                                foto.onload = function(){
+                                                    foto = new Image();
+                                                    foto.onload = function(){
+                                                      foto = new Image();
+                                                      foto.onload = function(){
+                                                       foto = new Image();
+                                                       foto.onload = function(){
+                                                         foto = new Image();
+                                                         foto.onload = function(){
+                                                           foto = new Image();
+                                                           foto.onload = function(){
+                                                            foto = new Image();
+                                                            foto.onload = function(){
+                                                              uyu();
+                                                            }
+                                                            foto.src = "Images/sodyumnitrat.png";
+                                                           }
+                                                           foto.src = "Reactions/hno3+naoh.png";
+                                                         }
+                                                         foto.src = "Images/sodyumsulfat.png";
+                                                       }
+                                                       foto.src = "Reactions/h2so4+naoh.png";
+                                                      }
+                                                      foto.src = "Reactions/hcl+naoh.png";
+                                                    }
+                                                    foto.src = "Images/sodyumhidroksit.png";
+                                                }
+                                                foto.src = "Images/potasyumklorur.png";
+                                              }
+                                              foto.src = "Reactions/hcl+koh.png";
+                                             }
+                                             foto.src = "Images/nitrikasit.png";
+                                           }
+                                           foto.src = "Images/potasyumnitrat.png";
+                                         }
+                                         foto.src = "Reactions/hno3+koh.png";
                                         }
                                         foto.src = "Reactions/na+hcl.png";
                                        }
@@ -1018,7 +1121,7 @@ function calcWave() {
     case "sulfirik.":
     return "Strong Acid";
     case "hidroklorik.":
-    return "Storng Acid";
+    return "Strong Acid";
     case"potaskostik.":
     return "Strong Base";
     case"potasyumsulfat.":
@@ -1045,7 +1148,18 @@ function calcWave() {
     return "Element";
     case "sodyumklorur.":
     return "Salt";
-
+    case "potasyumnitrat.":
+    return "Salt";
+    case "nitrikasit.":
+    return "Strong acid";
+    case "potasyumklorur.":
+    return "Salt";
+    case "sodyumhidroksit.":
+    return "Strong Base";
+    case "sodyumsulfat.":
+    return "Salt";
+    case "sodyumnitrat.":
+    return "Salt";
        }
      }
   function getID(isim){
@@ -1080,6 +1194,18 @@ function calcWave() {
         return "Sodium";
         case "sodyumklorur":
         return "Sodium chloride";
+        case "potasyumnitrat.":
+        return "Potassium nitrate";
+        case "nitrikasit":
+        return "Nitric acid";
+        case "potasyumklorur":
+        return "Potassium chloride";
+        case "sodyumhidroksit.":
+        return "Sodium hydroxide";
+        case "sodyumsulfat.":
+        return "Sodium sulfate";
+        case "sodyumnitrat.":
+        return "Sodium nitrate";
     }
   }   
   function getNumber(isim){
