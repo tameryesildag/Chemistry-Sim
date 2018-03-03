@@ -195,7 +195,7 @@ for(let hidrojenolmasigereken of entiler){
  for(let bazolmasigereken of entiler){
      for(let asitolmasigereken of entiler){
          if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit")){
-             if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("hidroklorik")){
+             if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("karbonikasit")){
                  if(dist(bazolmasigereken.x,bazolmasigereken.y,asitolmasigereken.x,asitolmasigereken.y) < 75){
                      if(sivi.cikti == 0){
                          sucikart();
@@ -232,6 +232,10 @@ for(let hidrojenolmasigereken of entiler){
                          entiekle("sodyumnitrat");
                          tepkimegoster("hno3+naoh");
                      }
+                     if(asitolmasigereken.name.includes("karbonikasit") && bazolmasigereken.name.includes("potaskostik")){
+                        entiekle("potasyumkarbonat");
+                        tepkimegoster("h2co3+koh");
+                    }
                  }
              }
          }
@@ -655,6 +659,10 @@ function calcWave() {
    return 31;
    case "sodyumnitrat":
    return 32;
+   case "potasyumkarbonat":
+   return 33;
+   case "h2co3+koh":
+   return 34;
    }
   }
 
@@ -936,7 +944,12 @@ function calcWave() {
       img.push(loadImage("Images/sodyumsulfat.png")); //30
       img.push(loadImage("Reactions/hno3+naoh.png")); //31
       img.push(loadImage("Images/sodyumnitrat.png")); //32
-      var foto;
+      img.push(loadImage("Images/potasyumkarbonat.png")); //33
+      img.push(loadImage("Reactions/h2co3+koh.png")); //34
+      img.push(loadImage("Reactions/h2co3+naoh.png")); //35
+      img.push(loadImage("Images/sodyumkarbonat.png")); //36
+      
+    /*  var foto;
       foto = new Image();
       foto.onload = function(){
       // img[img.length - 1].width = foto.width;
@@ -1011,7 +1024,23 @@ function calcWave() {
                                                            foto.onload = function(){
                                                             foto = new Image();
                                                             foto.onload = function(){
-                                                              uyu();
+                                                                foto = new Image();
+                                                                foto.onload = function(){
+                                                                  foto = new Image();
+                                                                  foto.onload = function(){
+                                                                    foto = new Image();
+                                                                    foto.onload = function(){
+                                                                      foto = new Image();
+                                                                      foto.onload = function(){
+                                                                          
+                                                                      }
+                                                                      foto.src = "Images/sodyumkarbonat.png";
+                                                                    }
+                                                                    foto.src = "Reactions/h2co3+naoh.png";
+                                                                  }
+                                                                  foto.src = "Reactions/h2co3+koh.png";
+                                                                }
+                                                                foto.src = "Images/potasyumkarbonat.png";
                                                             }
                                                             foto.src = "Images/sodyumnitrat.png";
                                                            }
@@ -1078,11 +1107,11 @@ function calcWave() {
        foto.src = "Images/oksijen.png";
 
       }
-      foto.src = "Images/hidrojen.png";
+      foto.src = "Images/hidrojen.png"; */
 
 
 
-      print("img[0].width: " + img[0].width);
+      //print("img[0].width: " + img[0].width);
       print("Images has been loaded.")
   }
   function karbondioksitcikart(){
@@ -1129,7 +1158,7 @@ function calcWave() {
     case"kalsiyumklorur.":
     return "Tuz";
     case"kalsiyumkarbonat.":
-    return "Karbonat";
+    return "Tuz (Karbonat)";
     case"hidrojen.":
     return "Element";
     case"oksijen.":
@@ -1159,6 +1188,8 @@ function calcWave() {
     case "sodyumsulfat.":
     return "Tuz";
     case "sodyumnitrat.":
+    return "Tuz";
+    case "potasyumkarbonat.":
     return "Tuz";
        }
      }
@@ -1206,6 +1237,8 @@ function calcWave() {
         return "Sodyum sülfat";
         case "sodyumnitrat.":
         return "Sodyum nitrat";
+        case "potasyumkarbonat.":
+        return "Potasyum karbonat";
     }
   }   
   function getNumber(isim){
