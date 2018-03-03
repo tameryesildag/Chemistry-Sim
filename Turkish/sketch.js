@@ -236,6 +236,10 @@ for(let hidrojenolmasigereken of entiler){
                         entiekle("potasyumkarbonat");
                         tepkimegoster("h2co3+koh");
                     }
+                    if(asitolmasigereken.name.includes("karbonikasit") && bazolmasigereken.name.includes("sodyumhidroksit")){
+                        entiekle("sodyumkarbonat");
+                        tepkimegoster("h2co3+naoh");
+                    }
                  }
              }
          }
@@ -663,6 +667,10 @@ function calcWave() {
    return 33;
    case "h2co3+koh":
    return 34;
+   case "h2co3+naoh":
+   return 35;
+   case "sodyumkarbonat":
+   return 36;
    }
   }
 
@@ -1191,6 +1199,8 @@ function calcWave() {
     return "Tuz";
     case "potasyumkarbonat.":
     return "Tuz";
+    case "sodyumkarbonat.":
+    return "Tuz";
        }
      }
   function getID(isim){
@@ -1239,6 +1249,8 @@ function calcWave() {
         return "Sodyum nitrat";
         case "potasyumkarbonat.":
         return "Potasyum karbonat";
+        case "sodyumkarbonat.":
+        return "Sodyum karbonat";
     }
   }   
   function getNumber(isim){

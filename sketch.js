@@ -236,6 +236,10 @@ for(let hidrojenolmasigereken of entiler){
                          entiekle("potasyumkarbonat");
                          tepkimegoster("h2co3+koh");
                      }
+                     if(asitolmasigereken.name.includes("karbonikasit") && bazolmasigereken.name.includes("sodyumhidroksit")){
+                         entiekle("sodyumkarbonat");
+                         tepkimegoster("h2co3+naoh");
+                     }
                  }
              }
          }
@@ -663,6 +667,10 @@ function calcWave() {
    return 33;
    case "h2co3+koh":
    return 34;
+   case "h2co3+naoh":
+   return 35;
+   case "sodyumkarbonat":
+   return 36;
    }
   }
 
@@ -948,7 +956,7 @@ function calcWave() {
       img.push(loadImage("Reactions/h2co3+koh.png")); //34
       img.push(loadImage("Reactions/h2co3+naoh.png")); //35
       img.push(loadImage("Images/sodyumkarbonat.png")); //36
-      var foto;
+   /*   var foto;
       foto = new Image();
       foto.onload = function(){
       // img[img.length - 1].width = foto.width;
@@ -1106,11 +1114,11 @@ function calcWave() {
        foto.src = "Images/oksijen.png";
 
       }
-      foto.src = "Images/hidrojen.png";
+      foto.src = "Images/hidrojen.png"; */
 
 
 
-      print("img[0].width: " + img[0].width);
+   //   print("img[0].width: " + img[0].width);
       print("Images has been loaded.")
   }
   function karbondioksitcikart(){
@@ -1190,6 +1198,8 @@ function calcWave() {
     return "Salt";
     case "potasyumkarbonat.":
     return "Salt";
+    case "sodyumkarbonat.":
+    return "Salt";
        }
      }
   function getID(isim){
@@ -1238,6 +1248,8 @@ function calcWave() {
         return "Sodium nitrate";
         case "potasyumkarbonat.":
         return "Potassium carbonate";
+        case "sodyumkarbonat.":
+        return "Sodium carbonate";
     }
   }   
   function getNumber(isim){
