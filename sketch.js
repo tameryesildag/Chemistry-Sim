@@ -194,7 +194,7 @@ for(let hidrojenolmasigereken of entiler){
  }
  for(let bazolmasigereken of entiler){
      for(let asitolmasigereken of entiler){
-         if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit")){
+         if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit") || bazolmasigereken.name.includes("lityumhidroksit")){
              if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("karbonikasit")){
                  if(dist(bazolmasigereken.x,bazolmasigereken.y,asitolmasigereken.x,asitolmasigereken.y) < 75){
                      if(sivi.cikti == 0){
@@ -239,6 +239,14 @@ for(let hidrojenolmasigereken of entiler){
                      if(asitolmasigereken.name.includes("karbonikasit") && bazolmasigereken.name.includes("sodyumhidroksit")){
                          entiekle("sodyumkarbonat");
                          tepkimegoster("h2co3+naoh");
+                     }
+                     if(asitolmasigereken.name.includes("sulfirik") && bazolmasigereken.name.includes("lityumhidroksit")){
+                         entiekle("lityumsulfat");
+                         tepkimegoster("lioh+h2so4");
+                     }
+                     if(asitolmasigereken.name.includes("hidroklorik") && bazolmasigereken.name.includes("lityumhidroksit")){
+                         entiekle("lityumklorur");
+                         tepkimegoster("lioh+hcl")
                      }
                  }
              }
@@ -678,6 +686,16 @@ function calcWave() {
    return 35;
    case "sodyumkarbonat":
    return 36;
+   case "lityumhidroksit":
+   return 37;
+   case "lityumsulfat":
+   return 38;
+   case "lioh+h2so4":
+   return 39;
+   case "lityumklorur":
+   return 40;
+   case "lioh+hcl":
+   return 41;
    }
   }
 
@@ -895,7 +913,7 @@ function calcWave() {
 
   function tepkimegoster(isim){
     saydamlik = 255;
-    saydamlikazalmamiktari = 0.1;
+    saydamlikazalmamiktari = 0.01;
     tepkimeresim = isim;
    }
 
@@ -963,169 +981,13 @@ function calcWave() {
       img.push(loadImage("Reactions/h2co3+koh.png")); //34
       img.push(loadImage("Reactions/h2co3+naoh.png")); //35
       img.push(loadImage("Images/sodyumkarbonat.png")); //36
-   /*   var foto;
-      foto = new Image();
-      foto.onload = function(){
-      // img[img.length - 1].width = foto.width;
-      // img[img.length - 1].height = foto.height;      
-                                                        
-       foto = new Image();                              
-
-       foto.onload = function(){
-        // img[img.length - 1].width = foto.width;
-        // img[img.length - 1].height = foto.height;
-         foto = new Image();
-         foto.onload = function(){
-         // img[img.length - 1].width = foto.width;
-        //  img[img.length - 1].height = foto.height;   
-          foto = new Image();
-          foto.onload = function(){
-          foto = new Image();
-          foto.onload = function(){
-           foto = new Image();
-           foto.onload = function(){
-            foto = new Image();
-            foto.onload = function(){
-             foto = new Image();
-             foto.onload = function(){
-                foto = new Image();
-                foto.onload = function(){
-                   foto = new Image();
-                   foto.onload = function(){
-                    foto = new Image();
-                    foto.onload = function(){
-                      foto = new Image();
-                      foto.onload = function(){
-                       foto = new Image();
-                       foto.onload = function(){
-                         foto = new Image();
-                         foto.onload = function(){
-                           foto = new Image();
-                           foto.onload = function(){
-                               foto = new Image();
-                               foto. onload = function(){
-                                 foto = new Image();
-                                 foto.onload= function(){
-                                   foto = new Image();
-                                   foto.onload = function(){
-                                    foto = new Image();
-                                    foto.onload = function(){
-                                     foto = new Image();
-                                     foto.onload = function(){
-                                       foto = new Image();
-                                       foto.onload = function(){
-                                        foto = new Image();
-                                        foto.onload = function(){
-                                         foto = new Image();
-                                         foto.onload = function(){
-                                           foto = new Image();
-                                           foto.onload = function(){
-                                             foto = new Image();
-                                             foto.onload = function(){
-                                              foto = new Image();
-                                              foto.onload = function(){
-                                                foto = new Image();
-                                                foto.onload = function(){
-                                                    foto = new Image();
-                                                    foto.onload = function(){
-                                                      foto = new Image();
-                                                      foto.onload = function(){
-                                                       foto = new Image();
-                                                       foto.onload = function(){
-                                                         foto = new Image();
-                                                         foto.onload = function(){
-                                                           foto = new Image();
-                                                           foto.onload = function(){
-                                                            foto = new Image();
-                                                            foto.onload = function(){
-                                                              foto = new Image();
-                                                              foto.onload = function(){
-                                                                foto = new Image();
-                                                                foto.onload = function(){
-                                                                  foto = new Image();
-                                                                  foto.onload = function(){
-                                                                    foto = new Image();
-                                                                    foto.onload = function(){
-                                                                        
-                                                                    }
-                                                                    foto.src = "Images/sodyumkarbonat.png";
-                                                                  }
-                                                                  foto.src = "Reactions/h2co3+naoh.png";
-                                                                }
-                                                                foto.src = "Reactions/h2co3+koh.png";
-                                                              }
-                                                              foto.src = "Images/potasyumkarbonat.png";
-                                                            }
-                                                            foto.src = "Images/sodyumnitrat.png";
-                                                           }
-                                                           foto.src = "Reactions/hno3+naoh.png";
-                                                         }
-                                                         foto.src = "Images/sodyumsulfat.png";
-                                                       }
-                                                       foto.src = "Reactions/h2so4+naoh.png";
-                                                      }
-                                                      foto.src = "Reactions/hcl+naoh.png";
-                                                    }
-                                                    foto.src = "Images/sodyumhidroksit.png";
-                                                }
-                                                foto.src = "Images/potasyumklorur.png";
-                                              }
-                                              foto.src = "Reactions/hcl+koh.png";
-                                             }
-                                             foto.src = "Images/nitrikasit.png";
-                                           }
-                                           foto.src = "Images/potasyumnitrat.png";
-                                         }
-                                         foto.src = "Reactions/hno3+koh.png";
-                                        }
-                                        foto.src = "Reactions/na+hcl.png";
-                                       }
-                                       foto.src = "Images/sodyumklorur.png";
-                                     }
-                                     foto.src = "Images/sodyumelement.png";
-                                    }
-                                    foto.src = "Images/magnezyumklorur.png"
-                                   }
-                                   foto.src = "Reactions/cao+h2co3.png";
-                                 }
-                                 foto.src = "Reactions/mg+h2so4.png";
-                               }
-                               foto.src = "Reactions/caco3+hcl.png";
-                           }
-                           foto.src = "Reactions/koh+h2so4.png";
-                         }
-                         foto.src = "Images/karbonikasit.png";
-                       }
-                       foto.src = "Images/kalsiyumoksit.png";
-                      }
-                      foto.src = "Images/magnezyumsulfat.png";
-                    }
-                    foto.src = "Images/magnezyumelement.png";
-                   }
-                   foto.src = "Images/hidrojen2.png";
-                }
-                foto.src = "Images/karbondioksit.png";
-             }
-             foto.src = "Images/kalsiyumklorur.png";
-            }
-            foto.src = "Images/kalsiyumkarbonat.png";
-           }
-           foto.src = "Images/hidroklorik.png";
-          }
-          foto.src = "Images/potasyumsulfat.png";
-          }
-          foto.src = "Images/potaskostik.png";
-         }
-         foto.src = "Images/sulfirik.png";
-        }
-       foto.src = "Images/oksijen.png";
-
-      }
-      foto.src = "Images/hidrojen.png"; */
+      img.push(loadImage("Images/lityumhidroksit.png")); //37
+      img.push(loadImage("Images/lityumsulfat.png")); //38
+      img.push(loadImage("Reactions/lioh+h2so4.png")) //39
+      img.push(loadImage("Images/lityumklorur.png")); //40
+      img.push(loadImage("Reactions/lioh+hcl.png")) //41
 
 
-
-   //   print("img[0].width: " + img[0].width);
       print("Images has been loaded.")
   }
   function karbondioksitcikart(){
@@ -1207,6 +1069,12 @@ function calcWave() {
     return "Salt";
     case "sodyumkarbonat.":
     return "Salt";
+    case "lityumhidroksit.":
+    return "Strong base";
+    case "lityumsulfat.":
+    return "Salt";
+    case "lityumklorur.":
+    return "Salt";
        }
      }
   function getID(isim){
@@ -1257,6 +1125,12 @@ function calcWave() {
         return "Potassium carbonate";
         case "sodyumkarbonat.":
         return "Sodium carbonate";
+        case "lityumhidroksit.":
+        return "Lithium hydroxide";
+        case "lityumsulfat.":
+        return "Lithium sulfate";
+        case "lityumklorur.":
+        return "Lithium chloride";
     }
   }   
   function getNumber(isim){
