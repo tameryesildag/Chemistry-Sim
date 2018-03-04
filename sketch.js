@@ -1239,7 +1239,7 @@ function calcWave() {
         return "Magnesium chloride";
         case "sodyumelement.":
         return "Sodium";
-        case "sodyumklorur":
+        case "sodyumklorur.":
         return "Sodium chloride";
         case "potasyumnitrat.":
         return "Potassium nitrate";
