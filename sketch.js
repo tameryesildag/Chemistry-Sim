@@ -272,12 +272,12 @@ for(let hidrojenolmasigereken of entiler){
 }
 
 for(let magnezyumolmasigereken of entiler){
-    for(let sulfirikolmasigereken of entiler){
+    for(let asitolmasigereken of entiler){
         if(magnezyumolmasigereken.name.includes("magnezyumelement")){
-            if(sulfirikolmasigereken.name.includes("sulfirik")){
-                if(dist(magnezyumolmasigereken.x,magnezyumolmasigereken.y,sulfirikolmasigereken.x,sulfirikolmasigereken.y) < 75){
+            if(asitolmasigereken.name.includes("sulfirik")){
+                if(dist(magnezyumolmasigereken.x,magnezyumolmasigereken.y,asitolmasigereken.x,asitolmasigereken.y) < 75){
                   var silinecekler = [];
-                  silinecekler.push(entiler.indexOf(sulfirikolmasigereken), entiler.indexOf(magnezyumolmasigereken));
+                  silinecekler.push(entiler.indexOf(asitolmasigereken), entiler.indexOf(magnezyumolmasigereken));
                   silinecekler.sort(function(a,b) {return a-b});
                   yoket(silinecekler[1],silinecekler[0]);
                   entiekle("magnezyumsulfat");
@@ -572,6 +572,13 @@ function calcWave() {
 
 
   function entiekle(isim){
+    var mevcutentisayisi = 0;
+    for(let _enti of entiler){
+        mevcutentisayisi += 1;
+    }
+    if(mevcutentisayisi >= 10){
+        return;
+    }
     secilenobje = -1;
     var numara = 1;
     var olacakisim = isim + random(1,9999);

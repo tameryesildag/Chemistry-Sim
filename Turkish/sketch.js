@@ -572,6 +572,13 @@ function calcWave() {
 
 
   function entiekle(isim){
+    var mevcutentisayisi = 0;
+    for(let _enti of entiler){
+        mevcutentisayisi += 1;
+    }
+    if(mevcutentisayisi >= 10){
+        return;
+    }
     secilenobje = -1;
     var numara = 1;
     var olacakisim = isim + random(1,9999);
