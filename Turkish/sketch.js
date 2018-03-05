@@ -225,7 +225,7 @@ for(let hidrojenolmasigereken of entiler){
                          tepkimegoster("hcl+naoh");
                      }
                      if(asitolmasigereken.name.includes("sulfirik") && bazolmasigereken.name.includes("sodyumhidroksit")){
-                         entiekle("sodyumsulfat");
+                         entiekle("sodyum2sulfat");
                          tepkimegoster("h2so4+naoh");
                      }
                      if(asitolmasigereken.name.includes("nitrikasit") && bazolmasigereken.name.includes("sodyumhidroksit")){
@@ -247,6 +247,10 @@ for(let hidrojenolmasigereken of entiler){
                     if(asitolmasigereken.name.includes("hidroklorik") && bazolmasigereken.name.includes("lityumhidroksit")){
                         entiekle("lityumklorur");
                         tepkimegoster("lioh+hcl");
+                    }
+                    if(asitolmasigereken.name.includes("nitrikasit") && bazolmasigereken.name.includes("lityumhidroksit")){
+                        entiekle("lityumnitrat");
+                        tepkimegoster("lioh+hno3");
                     }
                  }
              }
@@ -339,17 +343,23 @@ for(let kalsiyumoksitolmasigereken of entiler){
 }
 
 for(let sodyumolmasigereken of entiler){
-    for(let hidroklorikolmasigereken of entiler){
+    for(let asitolmasigereken of entiler){
         if(sodyumolmasigereken.name.includes("sodyumelement")){
-            if(hidroklorikolmasigereken.name.includes("hidroklorik")){
-                if(dist(sodyumolmasigereken.x,sodyumolmasigereken.y,hidroklorikolmasigereken.x,hidroklorikolmasigereken.y) < 75){
+            if(asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("sulfirik")){
+                if(dist(sodyumolmasigereken.x,sodyumolmasigereken.y,asitolmasigereken.x,asitolmasigereken.y) < 75){
                     var silinecekler = [];
-                    silinecekler.push(entiler.indexOf(sodyumolmasigereken), entiler.indexOf(hidroklorikolmasigereken));
+                    silinecekler.push(entiler.indexOf(sodyumolmasigereken), entiler.indexOf(asitolmasigereken));
                     silinecekler.sort(function(a,b) {return a-b});
                     yoket(silinecekler[1], silinecekler[0]);
+                    if(asitolmasigereken.name.includes("hidroklorik")){
                     entiekle("sodyumklorur");
-                    hidrojen2cikart();
                     tepkimegoster("na+hcl");
+                    }
+                    if(asitolmasigereken.name.includes("sulfirik")){
+                       entiekle("sodyum2sulfat");
+                        tepkimegoster("na+h2so4");
+                    }
+                    hidrojen2cikart();
                 }
             }
         }
@@ -357,7 +367,7 @@ for(let sodyumolmasigereken of entiler){
 }
 
  for(let bazolmasigereken of entiler){
-     if(bazolmasigereken.name.includes("potaskostik")){
+     if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit") || bazolmasigereken.name.includes("lityumhidroksit")){
          if(sivi.cikti == 1 && sivi.sivitipi == 2){
            if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
             sivi.sivitipi == 0;   
@@ -369,7 +379,7 @@ for(let sodyumolmasigereken of entiler){
  }
 
 for(let bazolmasigereken of entiler){
-    if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit")){
+    if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit") || bazolmasigereken.name.includes("lityumhidroksit")){
         if(sivi.cikti == 1 && sivi.sivitipi == 3){
             if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
                 sivi.sivitipi == 0;
@@ -381,7 +391,7 @@ for(let bazolmasigereken of entiler){
 } 
 
 for(let asitolmasigereken of entiler){
-    if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("nitrikasit")){
+    if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("karbonikasit")){
         if(sivi.cikti == 1 && sivi.sivitipi == 3){
           if(asitolmasigereken.y >= sivi.siviyuksekligi - 50){
               sivi.sivitipi == 0;
@@ -672,7 +682,7 @@ function calcWave() {
    return 28;
    case "h2so4+naoh":
    return 29;
-   case "sodyumsulfat":
+   case "sodyum2sulfat":
    return 30;
    case "hno3+naoh":
    return 31;
@@ -696,6 +706,12 @@ function calcWave() {
    return 40;
    case "lioh+hcl":
    return 41;
+   case "lioh+hno3":
+   return 42;
+   case "lityumnitrat":
+   return 43;
+   case "na+h2so4":
+   return 44;
    }
   }
 
@@ -706,6 +722,13 @@ function calcWave() {
         sivi.r = 66;
         sivi.g = 134;
         sivi.b = 244;
+        hedefr = sivi.r;
+        hedefg = sivi.g;
+        hedefb = sivi.b;
+    
+        hedefr2 = sivi.r;
+        hedefg2 = sivi.g;
+        hedefb2 = sivi.b;
         return;
     }
     if(sivi.cikti == 1 && sivi.sivitipi != 1){
@@ -715,6 +738,13 @@ function calcWave() {
         sivi.r = 66;
         sivi.g = 134;
         sivi.b = 244;
+        hedefr = sivi.r;
+        hedefg = sivi.g;
+        hedefb = sivi.b;
+    
+        hedefr2 = sivi.r;
+        hedefg2 = sivi.g;
+        hedefb2 = sivi.b;
         return;
     }
     if(sivi.cikti == 1 && sivi.sivitipi == 1){
@@ -748,6 +778,15 @@ function calcWave() {
           sivi.r = 202;
           sivi.g = 206;
           sivi.b = 206;
+
+    hedefr = sivi.r;
+    hedefg = sivi.g;
+    hedefb = sivi.b;
+
+    hedefr2 = sivi.r;
+    hedefg2 = sivi.g;
+    hedefb2 = sivi.b;
+
       }
       if(sivi.cikti == 1 && sivi.sivitipi != 2){
       sivikaldir();
@@ -755,6 +794,15 @@ function calcWave() {
       sivi.r = 202;
       sivi.g = 206;
       sivi.b = 206;
+
+    hedefr = sivi.r;
+    hedefg = sivi.g;
+    hedefb = sivi.b;
+
+    hedefr2 = sivi.r;
+    hedefg2 = sivi.g;
+    hedefb2 = sivi.b;
+
       benimvarim2 = setInterval(fenoftaleinrenkdegistirmeislem, 100);
       sivi.sivitipi = 2;
       }
@@ -801,6 +849,15 @@ function calcWave() {
     sivi.r = 202;
     sivi.g = 206;
     sivi.b = 206;
+
+    hedefr = sivi.r;
+    hedefg = sivi.g;
+    hedefb = sivi.b;
+
+    hedefr2 = sivi.r;
+    hedefg2 = sivi.g;
+    hedefb2 = sivi.b;
+
     benimvarim3 = setInterval(metiloranjrenkdegistirmeislem, 100);
     sivi.sivitipi = 3;
     }
@@ -894,7 +951,7 @@ function calcWave() {
    sivikaldir();
    tepkimeresim = null;
    hidrojen2ler = [];
-  karbondioksitler = [];
+   karbondioksitler = [];
    document.getElementById("boxbox").style.visibility = 'hidden';
   }
   function siviarttirmaislem(){
@@ -974,7 +1031,7 @@ function calcWave() {
       img.push(loadImage("Images/sodyumhidroksit.png")); //27
       img.push(loadImage("Reactions/hcl+naoh.png")); //28
       img.push(loadImage("Reactions/h2so4+naoh.png")); //29
-      img.push(loadImage("Images/sodyumsulfat.png")); //30
+      img.push(loadImage("Images/sodyum2sulfat.png")); //30
       img.push(loadImage("Reactions/hno3+naoh.png")); //31
       img.push(loadImage("Images/sodyumnitrat.png")); //32
       img.push(loadImage("Images/potasyumkarbonat.png")); //33
@@ -986,7 +1043,9 @@ function calcWave() {
       img.push(loadImage("Reactions/lioh+h2so4.png")) //39
       img.push(loadImage("Images/lityumklorur.png")); //40
       img.push(loadImage("Reactions/lioh+hcl.png")) //41
-      
+      img.push(loadImage("Reactions/lioh+hno3.png")) //42
+      img.push(loadImage("Images/lityumnitrat.png")); //43
+      img.push(loadImage("Reactions/na+h2so4.png")); // 44
       print("Images has been loaded.")
   }
   function karbondioksitcikart(){
@@ -1045,7 +1104,7 @@ function calcWave() {
     case "kalsiyumoksit.":
     return "Metal oksit";
     case "karbonikasit.":
-    return "Asit";
+    return "Zayıf asit";
     case "magnezyumklorur.":
     return "Tuz";
     case "sodyumelement.":
@@ -1060,7 +1119,7 @@ function calcWave() {
     return "Tuz";
     case "sodyumhidroksit.":
     return "Kuvvetli baz";
-    case "sodyumsulfat.":
+    case "sodyum2sulfat.":
     return "Tuz";
     case "sodyumnitrat.":
     return "Tuz";
@@ -1073,6 +1132,10 @@ function calcWave() {
     case "lityumsulfat.":
     return "Tuz";
     case "lityumklorur.":
+    return "Tuz";
+    case "lityumnitrat.":
+    return "Tuz";
+    case "sodyumsulfat.":
     return "Tuz";
        }
      }
@@ -1116,7 +1179,7 @@ function calcWave() {
         return "Potasyum klorür";
         case "sodyumhidroksit.":
         return "Sodium hidroksit";
-        case "sodyumsulfat.":
+        case "sodyum2sulfat.":
         return "Sodyum sülfat";
         case "sodyumnitrat.":
         return "Sodyum nitrat";
@@ -1130,6 +1193,10 @@ function calcWave() {
         return "Lityum sülfat";
         case "lityumklorur.":
         return "Lityum klorür";
+        case "lityumnitrat.":
+        return "Lityum nitrat";
+        case "sodyumsulfat.":
+        return "Sodyum sülfat";
     }
   }   
   function getNumber(isim){
