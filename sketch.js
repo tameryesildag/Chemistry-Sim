@@ -49,6 +49,8 @@ var tepkimeresim;
 var saydamlik = 255;
 var saydamlikazalmamiktari = 0.1;
 
+var benimvarim5;
+
 var mesaj = "";
 var myVar;
 var sonmesaj = "";
@@ -69,7 +71,7 @@ var sivi = {
     r:66,  
     g:134,
     b:244,
-    sivitipi:0 // 1:su    2:fenolftalein   3:metiloranj
+    sivitipi:0 // 1:su    2:fenolftalein   3:metiloranj    4:turnusol
 };
 
 var karbondioksit = {
@@ -369,8 +371,7 @@ for(let sodyumolmasigereken of entiler){
  for(let bazolmasigereken of entiler){
      if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit") || bazolmasigereken.name.includes("lityumhidroksit")){
          if(sivi.cikti == 1 && sivi.sivitipi == 2){
-           if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
-            sivi.sivitipi == 0;   
+           if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){ 
             yoket(entiler.indexOf(bazolmasigereken));
             sivirenkdegistir(224, 100, 222);
           }
@@ -380,11 +381,15 @@ for(let sodyumolmasigereken of entiler){
 
 for(let bazolmasigereken of entiler){
     if(bazolmasigereken.name.includes("potaskostik") || bazolmasigereken.name.includes("sodyumhidroksit") || bazolmasigereken.name.includes("lityumhidroksit")){
-        if(sivi.cikti == 1 && sivi.sivitipi == 3){
+        if(sivi.cikti == 1 && sivi.sivitipi == 3 || sivi.cikti == 1 && sivi.sivitipi == 4){
             if(bazolmasigereken.y >= sivi.siviyuksekligi - 50){
-                sivi.sivitipi == 0;
                 yoket(entiler.indexOf(bazolmasigereken));
+                if(sivi.sivitipi == 3){
                 sivirenkdegistir(226, 181, 15);
+                }
+                if(sivi.sivitipi == 4){
+                    sivirenkdegistir(0, 0, 255)
+                }
             }
         }
     }
@@ -392,11 +397,16 @@ for(let bazolmasigereken of entiler){
 
 for(let asitolmasigereken of entiler){
     if(asitolmasigereken.name.includes("sulfirik") || asitolmasigereken.name.includes("hidroklorik") || asitolmasigereken.name.includes("nitrikasit") || asitolmasigereken.name.includes("karbonikasit")){
-        if(sivi.cikti == 1 && sivi.sivitipi == 3){
+        if(sivi.cikti == 1 && sivi.sivitipi == 3 || sivi.cikti == 1 && sivi.sivitipi == 4){
           if(asitolmasigereken.y >= sivi.siviyuksekligi - 50){
               sivi.sivitipi == 0;
               yoket(entiler.indexOf(asitolmasigereken));
+              if(sivi.sivitipi == 3){
               sivirenkdegistir(214, 29, 29);
+              }
+              if(sivi.sivitipi == 4){
+                  sivirenkdegistir(255, 0, 0);
+              }
           }
         }
     }
@@ -585,6 +595,10 @@ function calcWave() {
      if(sivi.sivitipi == 3){
      fill(0,0,0);
      text('Methyl orange', 10, canvas.height - 20);
+     }
+     if(sivi.sivitipi == 4){
+     fill(0,0,0);
+     text('Litmus', 10, canvas.height - 20);
      }
   }
 
@@ -892,6 +906,68 @@ function calcWave() {
     }
     }
   }
+
+  function turnusolcikart(){
+    if(sivi.cikti == 0){
+        sivicikart();
+        sivi.r = 202;
+        sivi.g = 206;
+        sivi.b = 206;
+        hedefr = sivi.r;
+        hedefg = sivi.g;
+        hedefb = sivi.b;
+    
+        hedefr2 = sivi.r;
+        hedefg2 = sivi.g;
+        hedefb2 = sivi.b;
+    }
+    if(sivi.cikti == 1 && sivi.sivitipi != 4){
+    sivikaldir();
+    sivicikart();
+    sivi.r = 202;
+    sivi.g = 206;
+    sivi.b = 206;
+    hedefr = sivi.r;
+    hedefg = sivi.g;
+    hedefb = sivi.b;
+
+    hedefr2 = sivi.r;
+    hedefg2 = sivi.g;
+    hedefb2 = sivi.b;
+    benimvarim5 = setInterval(turnusolrenkdegistirmeislem, 100);
+    sivi.sivitipi = 4;
+    }
+    if(sivi.cikti == 1 && sivi.sivitipi == 3){
+        if(tiksayisi == 0){
+          siviarttir(200);
+        }
+    }
+  }
+
+  function turnusolrenkdegistirmeislem(){
+    if(sivi.sivitipi == 4){
+        if(sivi.r < hedefr){
+            sivi.r += 1;
+        }
+        if(sivi.g < hedefg){
+            sivi.g += 1;
+        }
+        if(sivi.b < hedefb){
+            sivi.b += 1;
+        }
+         
+        if(sivi.r > hedefr){
+            sivi.r -= 1;
+        }
+        if(sivi.g > hedefg){
+            sivi.g -= 1;
+        }
+        if(sivi.b > hedefb){
+            sivi.b -= 1;
+        }
+        }
+  }
+
   function entirender(){
     if(tiklandi == 1){
         if(entiler != null){
@@ -1176,9 +1252,9 @@ function calcWave() {
         return "Sodium chloride";
         case "potasyumnitrat.":
         return "Potassium nitrate";
-        case "nitrikasit":
+        case "nitrikasit.":
         return "Nitric acid";
-        case "potasyumklorur":
+        case "potasyumklorur.":
         return "Potassium chloride";
         case "sodyumhidroksit.":
         return "Sodium hydroxide";
