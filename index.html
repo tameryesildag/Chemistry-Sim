@@ -1,103 +1,186 @@
 <html>
+
 <head>
-<meta charset="UTF-8">
-<meta name="description" content="ChemistrySim is a web-based game where you put together chemical elements to create compounds and observe the reactions that compounds enter with the liquids.">
-<meta name="keywords" content="Chemistry,Simulator,Sim">
-<meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
-<title>Chemistry Simulator</title>
-<link rel="icon" href="flask.png">
-    <link rel="Stylesheet" type="text/css" href="main.css">
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src="matter.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/addons/p5.dom.min.js"></script>
-    <script src="type/p5.d.ts"></script>
-    <script src="type/matter.d.ts"></script>
-    <script src="sketch.js"></script>
-    <script src="enti.js"></script>
+  <meta charset="UTF-8">
+  <meta name="description"
+    content="ChemistrySim is a web-based game where you put together chemical elements to create compounds and observe the reactions that compounds enter with the liquids.">
+  <meta name="keywords" content="Chemistry,Simulator,Sim">
+  <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+  <title>Kimya Simülasyonu</title>
+  <link rel="icon" href="icon.png">
+  <link rel="Stylesheet" type="text/css" href="main.css">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,300" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,800,300" rel="stylesheet" type="text/css"/>
   <nav class="nav">
     <ul class="nav__menu">
-        <li class="nav__menu-item"> <div class='editLink'><a href="#" id="mylink" onclick="reset(); return false">Clear</a></div>
+      <li class="nav__menu-item">
+        <div class='editLink'><a href="#" id="mylink" onclick="Reset()">Temizle</a></div>
+      </li>
+      <li class="nav__menu-item"><a>Elementler</a>
+        <ul class="nav__submenu">
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Hydrogen')">Hidrojen</a></div>
           </li>
-      <li class="nav__menu-item"><a>Element</a>
-        <ul class="nav__submenu">
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('hidrojen'); return false">Hydrogen</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('oksijen'); return false">Oxygen</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('magnezyumelement'); return false">Magnesium</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyumelement'); return false">Sodium</a></div></li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Oxygen')">Oksijen</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Magnesium')">Magnezyum</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodium')">Sodyum</a></div>
+          </li>
         </ul>
       </li>
-      <li class="nav__menu-item"><a>Liquid</a>
+      <li class="nav__menu-item"><a>Sıvılar</a>
         <ul class="nav__submenu">
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="sucikart(); return false">Water</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="fenolftaleincikart(); return false">Phenolphthalein</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="metiloranjcikart(); return false">Methyl orange</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="turnusolcikart(); return false">Litmus</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="sivikaldir(); return false">Empty</a></div></li>
+          <li class="nav__submenu-item">
+            <div class='editLink' style="display: none;"><a href="#" id="mylink" onclick="Fluid.Summon('Su')">Su</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Fluid.Summon('Fenolftalein')">Fenolftalein</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Fluid.Summon('Metil Turuncusu')">Metil Turuncusu</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Fluid.Summon('Turnusol')">Turnusol</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Fluid.Remove()">Boşalt</a></div>
+          </li>
         </ul>
       </li>
-      <li class="nav__menu-item"><a>Acid</a>
+      <li class="nav__menu-item"><a>Asitler</a>
         <ul class="nav__submenu">
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sulfirik');">Sulfuric acid</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('hidroklorik');">Hydrochloric acid</a></div></li>
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('karbonikasit');">Carbonic acid</a></div></li>          
-          <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('nitrikasit');">Nitric acid</a></div></li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sulfuricacid')">Sülfirik Asit</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Hydrochloricacid')">Hidroklorik Asit</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Carbonicacid')">Karbonik Asit</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Nitricacid')">Nitrik Asit</a></div>
+          </li>
 
         </ul>
       </li>
-      <li class="nav__menu-item"><a>Base</a>
+      <li class="nav__menu-item"><a>Bazlar</a>
         <ul class="nav__submenu">
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('potaskostik');">Potassium hydroxide</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyumhidroksit');">Sodium hydroxide</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('lityumhidroksit');">Lithium hydroxide</a></div></li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Potassiumhydroxide')">Potasyum Hidroksit</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodiumhydroxide')">Sodyum Hidroksit</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Lithiumhydroxide')">Lityum Hidroksit</a>
+            </div>
+          </li>
 
         </ul>
       </li>
-      <li class="nav__menu-item"><a>Salt</a>
+      <li class="nav__menu-item" style="visibility: hidden"><a>Tuzlar</a>
         <ul class="nav__submenu">
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('potasyumsulfat');">Potassium sulfate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('kalsiyumkarbonat');">Calcium carbonate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('magnezyumklorur');">Magnesium chloride</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('potasyumklorur');">Potassium chloride</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('potasyumnitrat');">Potassium nitrate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyum2sulfat');">Sodium sulfate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyumnitrat');">Sodium nitrate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('kalsiyumoksit');">Calcium oxide</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('kalsiyumklorur');">Calcium chloride</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyumklorur');">Sodium chloride</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('potasyumkarbonat');">Potassium carbonate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('sodyumkarbonat');">Sodium carbonate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('lityumklorur');">Lithium chloride</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('lityumsulfat');">Lithium sulfate</a></div></li>
-            <li class="nav__submenu-item"> <div class='editLink'><a href="#" id="mylink" onclick="entiekle('lityumnitrat');">Lithium nitrate</a></div></li>
-
-
-
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Potassiumsulfate')">Potasyum Sülfat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Calciumcarbonate')">Kalsiyum Karbonat</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Magnesiumchloride')">Magnezyum Klorür</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Potassiumchloride')">Potasyum Klorür</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Potassiumnitrate')">Potasyum Nitrat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodiumsulfate')">Sodyum Sülfat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodiumnitrate')">Sodyum Nitrat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Calciumoxide')">Kalsiyum Oksit</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Calciumchloride')">Kalsiyum Klorür</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodiumchloride')">Sodyum klorür</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Potassiumcarbonate')">Potasyum Karbonat</a>
+            </div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Sodiumcarbonate')">Sodyum Karbonat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Lithiumchloride')">Lityum Klorür</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Lithiumsulfate')">Lityum Sülfat</a></div>
+          </li>
+          <li class="nav__submenu-item">
+            <div class='editLink'><a href="#" id="mylink" onclick="Summon('Lithiumnitrate')">Lityum Nitrat</a></div>
+          </li>
         </ul>
-      </li>
-      <li style="float: right" class="nav__menu-item"><a>Language</a>
-        <ul class="nav__submenu">
-        <li class="nav__submenu-item"> <div class='editLink'><a href="Turkish.html">Turkish</a></div></li>
-        <li class="nav__submenu-item"> <div class='editLink'><a href="Index.html">English</a></div></li>
-      </ul>
       </li>
   </nav>
-  <div id="boxbox" class="box">
-    <img id="elementimg" src="Images/hidrojen.png">
-    <p id="nameid">type</p>
-    <p id="numberid"></p>
+  <div id="mybox" class="box">
+    <img id="elementimg" src="Textures/hydrogen.png">
+    <p id="number">type</p>
+    <p id="name"></p>
     <p><br></p>
-    <p id="typeid">type</p>
+    <p id="type">type</p>
   </div>
-  <div id="sketch-holder"></div>
-  <div id="p5_loading" class="loadingclass">Loading assets.</div>
-
-  <a target="_blank" href = "https://www.github.com/tameryesildag/chemistrysim.com" id="guzela"> 
-    <img src="Images/github.png"id="githubimg">
+  <div id="mybox" class="box">
+    <img id="elementimg" src="Textures/hydrogen.png">
+    <p id="number">type</p>
+    <p id="name"></p>
+    <p><br></p>
+    <p id="type">type</p>
+  </div>
+  <a target="_blank" href="https://www.github.com/tameryesildag/chemistrysim.com" class="nodeca">
+    <img src="Textures/github.png" id="githubimg">
 
   </a>
+  <canvas id="mycanvas"></canvas>
+  <script defer src="goals.js"></script>
+  <script defer src="main.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="matters.js"></script>
+  <div class="description-container">
+    <h1>Nasıl Oynanır?</h1>
+    <p class="description-text">Zamanın bitmeden aşağıdakilerin hepsini keşfetmelisin. Zaman geçtikçe puanın azalacak.</p>
+    <br>
+    <p class="description-text">Tuzları asit baz tepkimlerini gerçekleştirerek keşfetmelisin.</p>
+    <img src="Textures/Salts.png">
+    <br>
+    <br>
+    <p class="description-text">Aşağıdaki renklerin hepsini indikatörleri kullanarak keşfetmelisin.</p>
+    <img src="Textures/colors.png">
+    <br>
+    <br>
+    <p class="description-text">Uygun elementleri yan yana getirerek su oluşturmalısın.</p>
+    <img src="Textures/water.png">
+  </div>
 </body>
+
 </html>
